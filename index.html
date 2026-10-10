@@ -2357,13 +2357,8 @@
     if (pw === 'admin123') {
       if (POSBANKUM_CLOUD_API_URL) {
         await cloudLoadPromise;
-        let token = sessionStorage.getItem('posbankum_cloud_admin_token');
-        if (!token) {
-          token = prompt('Masukkan token Admin Apps Script untuk menyimpan perubahan ke Google Drive:');
-          if (token) sessionStorage.setItem('posbankum_cloud_admin_token', token.trim());
-        }
         if (!sessionStorage.getItem('posbankum_cloud_admin_token')) {
-          setStatusCloud('Mode admin aktif, tetapi perubahan hanya tersimpan di perangkat ini karena token Drive belum dimasukkan.', true);
+          setStatusCloud('Mode admin aktif. Masukkan token Apps Script pada panel Sinkronisasi Google Drive untuk menerbitkan perubahan.', true);
         }
       }
       isAdmin = true;
