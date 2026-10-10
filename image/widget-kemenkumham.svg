@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <rect width="200" height="200" rx="34" fill="#123b35"/>
+  <circle cx="100" cy="81" r="54" fill="#f4b323" opacity=".16"/>
+  <path d="M100 39 111 62l25-4-12 22 15 20-26 1-13 23-13-23-26-1 15-20-12-22 25 4z" fill="#f4b323"/>
+  <path d="M83 82h34v31H83z" fill="#fff"/>
+  <path d="M91 89h18v3H91zm0 7h18v3H91zm0 7h13v3H91z" fill="#0f766e"/>
+  <text x="100" y="157" text-anchor="middle" fill="#fff" font-family="Arial,sans-serif" font-size="14" font-weight="700">KEMENTERIAN</text>
+  <text x="100" y="176" text-anchor="middle" fill="#f4b323" font-family="Arial,sans-serif" font-size="15" font-weight="700">HUKUM &amp; HAM</text>
+</svg>

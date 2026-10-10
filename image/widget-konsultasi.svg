@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <rect width="200" height="200" rx="34" fill="#0f766e"/>
+  <circle cx="100" cy="82" r="53" fill="#ffffff" opacity=".1"/>
+  <path d="M51 61a12 12 0 0 1 12-12h74a12 12 0 0 1 12 12v43a12 12 0 0 1-12 12h-38l-26 21v-21H63a12 12 0 0 1-12-12z" fill="#fff"/>
+  <circle cx="78" cy="83" r="6" fill="#f4b323"/>
+  <circle cx="100" cy="83" r="6" fill="#f4b323"/>
+  <circle cx="122" cy="83" r="6" fill="#f4b323"/>
+  <text x="100" y="171" text-anchor="middle" fill="#fff" font-family="Arial,sans-serif" font-size="18" font-weight="700" letter-spacing="2">KONSULTASI</text>
+</svg>

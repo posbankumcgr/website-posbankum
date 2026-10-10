@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <rect width="200" height="200" rx="34" fill="#12365b"/>
+  <circle cx="100" cy="82" r="53" fill="#ffffff" opacity=".08"/>
+  <path d="M55 74 100 49l45 25v8H55z" fill="#f4b323"/>
+  <path d="M62 88h76v8H62zm7 10h9v38h-9zm25 0h12v38H94zm27 0h9v38h-9zM58 138h84v9H58z" fill="#fff"/>
+  <text x="100" y="174" text-anchor="middle" fill="#fff" font-family="Arial,sans-serif" font-size="21" font-weight="700" letter-spacing="3">JDIH</text>
+</svg>

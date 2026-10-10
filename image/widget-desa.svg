@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <rect width="200" height="200" rx="34" fill="#07594f"/>
+  <circle cx="100" cy="82" r="52" fill="#ffffff" opacity=".1"/>
+  <path d="M55 91 100 54l45 37v48H55z" fill="#f8fafc"/>
+  <path d="m46 91 54-44 54 44-8 10-46-37-46 37z" fill="#f4b323"/>
+  <path d="M84 108h32v31H84z" fill="#0f766e"/>
+  <path d="M70 101h11v14H70zm49 0h11v14h-11z" fill="#b9e7dc"/>
+  <text x="100" y="169" text-anchor="middle" fill="#fff" font-family="Arial,sans-serif" font-size="18" font-weight="700" letter-spacing="2">WEB DESA</text>
+</svg>
