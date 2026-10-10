@@ -526,6 +526,7 @@
     background:#ffffff; border:1px dashed #cbd5e1; border-radius:8px;
     padding:8px; text-align:center; color:#64748b; margin:15px auto; max-width:728px;
   }
+  .ads-container small { font-size:10px; color:#94a3b8; }
 
   /* BERITA GRID */
   .berita-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:20px; }
@@ -753,7 +754,7 @@
 
 <!-- IKLAN BANNER -->
 <div class="ads-container">
-  <small style="font-size:10px; color:#94a3b8;">SLOT IKLAN / SPONSOR</small>
+  <small id="adSlotLabel">SLOT IKLAN / SPONSOR</small>
 </div>
 
 <!-- PANEL KHUSUS ADMIN KELOLA WIDGET SIDEBAR -->
@@ -807,6 +808,19 @@
       <option value="drift">Bergerak perlahan</option>
     </select>
     <p class="admin-help">Gunakan gambar latar sederhana dan atur kekuatannya agar teks tetap nyaman dibaca.</p>
+    <hr style="margin:16px 0; border:0; border-top:1px solid #e5e7eb;" />
+    <h4 style="margin-bottom:8px;">📢 Area Iklan & Sponsor</h4>
+    <label class="admin-file-label" for="adNetworkInput">Jaringan iklan:</label>
+    <select id="adNetworkInput">
+      <option value="none">Belum memilih jaringan</option>
+      <option value="adsense">Google AdSense</option>
+      <option value="monetag">Monetag</option>
+      <option value="adsterra">Adsterra</option>
+      <option value="other">Jaringan lain</option>
+    </select>
+    <label class="admin-file-label" for="adUnitIdInput">ID publisher / unit / zone (opsional):</label>
+    <input type="text" id="adUnitIdInput" maxlength="120" placeholder="Isi setelah mendapat ID dari penyedia iklan" />
+    <p class="admin-help">Area banner iklan sudah tersedia di halaman. Pilihan jaringan dan ID disimpan bersama pengaturan situs; iklan baru tayang setelah akun disetujui dan kode resmi penyedia dipasang. Jangan masukkan kode script dari sumber yang tidak dikenal.</p>
     <button type="button" onclick="simpanPengaturan()">💾 Simpan Pengaturan Website</button>
     <hr style="margin:16px 0; border:0; border-top:1px solid #e5e7eb;" />
     <strong>Cadangan konten & gambar</strong>
@@ -1101,7 +1115,9 @@
     pageBackgroundColor: '#f9fafb',
     pageBackgroundImage: '',
     pageBackgroundOpacity: 20,
-    pageBackgroundAnimation: 'none'
+    pageBackgroundAnimation: 'none',
+    adNetwork: 'none',
+    adUnitId: ''
   };
   const themePalettes = {
     green: { themePrimary: '#0f766e', themeSecondary: '#065f46', themeAccent: '#f59e0b', pageBackgroundColor: '#f9fafb', headerStart: 'rgba(7, 89, 82, 0.97)', headerEnd: 'rgba(5, 67, 56, 0.96)', heroStart: 'rgba(15,118,110,.85)', heroEnd: 'rgba(6,95,70,.85)' },
@@ -1600,6 +1616,17 @@
     document.getElementById('pageBackgroundAnimationInput').value = settings.pageBackgroundAnimation;
   }
 
+  function terapkanLabelIklan(network = settings.adNetwork) {
+    const labels = {
+      none: 'SLOT IKLAN / SPONSOR',
+      adsense: 'AREA IKLAN • GOOGLE ADSENSE',
+      monetag: 'AREA IKLAN • MONETAG',
+      adsterra: 'AREA IKLAN • ADSTERRA',
+      other: 'AREA IKLAN • SPONSOR'
+    };
+    document.getElementById('adSlotLabel').textContent = labels[network] || labels.none;
+  }
+
   function pilihTemaTampilan() {
     const preset = document.getElementById('themePresetInput').value;
     const palette = themePalettes[preset];
@@ -1639,6 +1666,9 @@
     document.getElementById('mapEmbedInput').value = settings.mapEmbed;
     document.getElementById('siteLogoPreview').src = settings.logo;
     document.getElementById('heroImagePreview').src = settings.heroImage;
+    document.getElementById('adNetworkInput').value = settings.adNetwork;
+    document.getElementById('adUnitIdInput').value = settings.adUnitId;
+    terapkanLabelIklan();
     isiFormTampilan();
   }
 
@@ -1662,7 +1692,9 @@
       pageBackgroundColor: document.getElementById('pageBackgroundColorInput').value,
       pageBackgroundImage: settings.pageBackgroundImage,
       pageBackgroundOpacity: Number(document.getElementById('pageBackgroundOpacityInput').value),
-      pageBackgroundAnimation: document.getElementById('pageBackgroundAnimationInput').value
+      pageBackgroundAnimation: document.getElementById('pageBackgroundAnimationInput').value,
+      adNetwork: document.getElementById('adNetworkInput').value,
+      adUnitId: document.getElementById('adUnitIdInput').value.trim()
     };
     const logoUrl = document.getElementById('siteLogoUrl').value.trim();
     const heroUrl = document.getElementById('heroImageUrl').value.trim();
@@ -1695,6 +1727,11 @@
         !Number.isFinite(nextSettings.pageBackgroundOpacity) ||
         nextSettings.pageBackgroundOpacity < 0 || nextSettings.pageBackgroundOpacity > 60) {
       alert('Pengaturan animasi atau kekuatan gambar latar tidak valid.');
+      return;
+    }
+    if (!['none', 'adsense', 'monetag', 'adsterra', 'other'].includes(nextSettings.adNetwork) ||
+        nextSettings.adUnitId.length > 120) {
+      alert('Periksa kembali pilihan jaringan dan ID iklan.');
       return;
     }
 
