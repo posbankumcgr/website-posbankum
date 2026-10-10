@@ -1,0 +1,2529 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>POSBANKUM Desa Cigentur</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; font-family: 'Segoe UI', Tahoma, sans-serif; }
+  :root {
+    --primary:#0f766e;
+    --secondary:#065f46;
+    --accent:#f59e0b;
+    --dark:#1f2937;
+    --page-background:#f9fafb;
+    --header-start:rgba(7, 89, 82, 0.97);
+    --header-end:rgba(5, 67, 56, 0.96);
+    --hero-start:rgba(15,118,110,.85);
+    --hero-end:rgba(6,95,70,.85);
+  }
+  html { scroll-behavior: smooth; }
+  body {
+    position:relative; isolation:isolate;
+    background:var(--page-background); color:var(--dark); line-height:1.6;
+  }
+  body::before {
+    content:""; position:fixed; inset:-3%; z-index:-1; pointer-events:none;
+    background-image:var(--page-background-image, none); background-position:center;
+    background-size:cover; background-repeat:no-repeat; opacity:var(--page-background-opacity, 0);
+    animation:var(--page-background-animation, none); will-change:transform;
+  }
+  @keyframes pageBackgroundZoom {
+    from { transform:scale(1); }
+    to { transform:scale(1.12); }
+  }
+  @keyframes pageBackgroundDrift {
+    from { transform:scale(1.05) translateX(-1%); }
+    to { transform:scale(1.05) translateX(1%); }
+  }
+  @media(prefers-reduced-motion:reduce) {
+    body::before { animation:none !important; }
+  }
+
+  /* HEADER */
+  header {
+    background: linear-gradient(135deg, var(--header-start), var(--header-end));
+    color: white;
+    padding: 18px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 12px 28px rgba(2, 44, 38, 0.18);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    border-bottom: 1px solid rgba(255,255,255,0.13);
+    backdrop-filter: blur(8px);
+  }
+  .logo { display:flex; align-items:center; gap:14px; }
+  .logo-image-wrap { position:relative; flex-shrink:0; }
+  .logo-img {
+    width:58px; height:58px; border-radius:50%;
+    object-fit:cover; border:2px solid #ffffff; background:white;
+    flex-shrink:0; box-shadow: 0 8px 18px rgba(0,0,0,0.18);
+  }
+  .logo-edit-button {
+    display:none; position:absolute; right:-5px; bottom:-4px; width:30px; height:30px;
+    align-items:center; justify-content:center; border:2px solid white; border-radius:50%;
+    background:#f59e0b; color:#1f2937; cursor:pointer; font-size:15px;
+    box-shadow:0 2px 8px rgba(0,0,0,.28);
+  }
+  .admin-mode .logo-edit-button { display:inline-flex; }
+  .logo-edit-button:hover { background:#fbbf24; transform:scale(1.08); }
+
+  .logo h1 {
+    font-size: 24px;
+    line-height: 1.2;
+    font-weight: 800;
+    letter-spacing: .02em;
+    text-transform: uppercase;
+    background: linear-gradient(110deg, #ffd700 0%, #fff8dc 25%, #f59e0b 50%, #fff8dc 75%, #ffd700 100%);
+    background-size: 200% auto; color: transparent;
+    -webkit-background-clip: text; background-clip: text;
+    animation: shineText 4s linear infinite;
+  }
+  .logo p {
+    font-size: 13px; font-weight: 600;
+    background: linear-gradient(110deg, #a7f3d0 0%, #ffffff 25%, #38bdf8 50%, #ffffff 75%, #a7f3d0 100%);
+    background-size: 200% auto; color: transparent;
+    -webkit-background-clip: text; background-clip: text;
+    animation: shineText 4s linear infinite;
+  }
+
+  @keyframes shineText {
+    0% { background-position: 0% center; }
+    100% { background-position: 200% center; }
+  }
+
+  nav ul { display:flex; gap:20px; list-style:none; align-items:center; }
+  nav a {
+    color: rgba(255,255,255,0.9);
+    text-decoration:none;
+    font-weight:600;
+    font-size: 15px;
+    transition:.25s ease;
+    position: relative;
+    padding-bottom: 3px;
+  }
+  nav a::after {
+    content: "";
+    position: absolute;
+    left: 0; bottom: -4px;
+    width: 0; height: 2px;
+    background: var(--accent);
+    transition: width .25s ease;
+  }
+  nav a:hover { color: white; }
+  nav a:hover::after { width: 100%; }
+  .btn-login {
+    background: linear-gradient(135deg, #fbbf24, #f59e0b);
+    color:white; border:none; padding:10px 18px;
+    border-radius:999px; cursor:pointer; font-weight:700; transition:.3s;
+    box-shadow: 0 8px 16px rgba(245, 158, 11, 0.35);
+  }
+  .btn-login:hover { transform: translateY(-1px); background:#d97706; }
+
+  /* HERO */
+  .hero {
+    background: linear-gradient(var(--hero-start), var(--hero-end));
+    position: relative;
+    color:white; padding:70px 20px; text-align:center;
+  }
+  .hero-background {
+    position:absolute; inset:0; width:100%; height:100%; object-fit:cover; z-index:0;
+  }
+  .hero::before {
+    content:""; position:absolute; inset:0;
+    background:linear-gradient(var(--hero-start), var(--hero-end));
+    z-index:1; pointer-events:none;
+  }
+  .hero-inner { position:relative; z-index:2; }
+  .hero h2 {
+    font-size: 38px; font-weight: 900; margin-bottom: 15px;
+    background: linear-gradient(110deg, #000000 0%, #777777 25%, #ffffff 50%, #777777 75%, #000000 100%);
+    background-size: 200% auto; color: transparent;
+    -webkit-background-clip: text; background-clip: text;
+    filter: drop-shadow(0px 2px 4px rgba(255, 255, 255, 0.5));
+    animation: shineText 4s linear infinite;
+  }
+  .hero p { font-size:17px; max-width:700px; margin:0 auto 25px; }
+
+  .hero-inner {
+    max-width: 1150px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    align-items: center;
+    gap: 28px;
+    text-align: left;
+  }
+  .hero-copy {
+    padding: 18px 0;
+  }
+  .hero-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 18px;
+  }
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 14px;
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.22);
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: .03em;
+    backdrop-filter: blur(4px);
+  }
+  .hero-copy h2 {
+    margin-bottom: 14px;
+    text-align: left;
+    max-width: 600px;
+  }
+  .hero-copy p {
+    margin: 0 0 24px;
+    max-width: 620px;
+    text-align: left;
+    font-size: 17px;
+    color: rgba(255,255,255,0.9);
+  }
+  .cta-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .primary-btn, .secondary-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    padding: 13px 20px;
+    border-radius: 999px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: transform .2s ease, box-shadow .2s ease;
+    cursor: pointer;
+  }
+  .primary-btn {
+    background: linear-gradient(135deg, #fbbf24, #f59e0b);
+    color: #1f2937;
+    box-shadow: 0 10px 20px rgba(245, 158, 11, 0.3);
+  }
+  .secondary-btn {
+    background: rgba(255,255,255,0.08);
+    color: white;
+    border: 1px solid rgba(255,255,255,0.25);
+  }
+  .primary-btn:hover, .secondary-btn:hover {
+    transform: translateY(-2px);
+  }
+  .hero-visual {
+    position: relative;
+    min-height: 320px;
+  }
+  .floating-panel {
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.18);
+    backdrop-filter: blur(10px);
+    border-radius: 22px;
+    box-shadow: 0 22px 40px rgba(2, 6, 23, 0.25);
+    overflow: hidden;
+  }
+  .hero-card-main {
+    padding: 24px;
+    position: absolute;
+    inset: 26px 30px 70px 16px;
+  }
+  .hero-graph {
+    width: 100%;
+    height: 150px;
+    border-radius: 18px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.18), rgba(255,255,255,0.04));
+    position: relative;
+    overflow: hidden;
+    margin-top: 18px;
+  }
+  .hero-graph::before {
+    content: "";
+    position: absolute;
+    inset: 22px 12px 20px 12px;
+    background: linear-gradient(135deg, rgba(255,255,255,0.5), rgba(255,255,255,0.05));
+    clip-path: polygon(0 80%, 15% 62%, 30% 70%, 50% 26%, 62% 45%, 76% 12%, 100% 38%, 100% 100%, 0 100%);
+  }
+  .hero-metrics {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 170px;
+    padding: 16px 18px;
+    background: rgba(255,255,255,0.92);
+    color: var(--dark);
+    border-radius: 18px 0 0 0;
+    box-shadow: 0 12px 28px rgba(0,0,0,0.12);
+  }
+  .hero-metrics strong {
+    display: block;
+    font-size: 28px;
+    color: var(--secondary);
+  }
+
+  .highlights {
+    max-width: 1100px;
+    margin: -12px auto 0;
+    padding: 0 20px 50px;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 18px;
+  }
+  .highlight-card {
+    background: rgba(255,255,255,0.9);
+    border: 1px solid rgba(15,118,110,0.08);
+    border-radius: 18px;
+    padding: 22px 18px;
+    box-shadow: 0 12px 25px rgba(15,118,110,0.08);
+    text-align: center;
+  }
+  .highlight-card .icon {
+    width: 52px;
+    height: 52px;
+    margin: 0 auto 12px;
+    border-radius: 14px;
+    background: linear-gradient(135deg, rgba(15,118,110,0.12), rgba(245,158,11,0.16));
+    display: grid;
+    place-items: center;
+    font-size: 26px;
+  }
+  .highlight-card h3 {
+    font-size: 18px;
+    color: var(--secondary);
+    margin-bottom: 6px;
+  }
+  .highlight-card p {
+    color: #4b5563;
+    font-size: 13px;
+  }
+
+  .service-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 22px;
+    margin-top: 25px;
+  }
+  .service-card {
+    background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+    border: 1px solid rgba(15,118,110,0.08);
+    border-radius: 20px;
+    padding: 24px 18px;
+    box-shadow: 0 12px 25px rgba(15, 23, 42, 0.06);
+    transition: transform .2s ease, box-shadow .2s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  .service-card::before {
+    content: "";
+    position: absolute;
+    inset: 0 auto auto 0;
+    width: 100%; height: 4px;
+    background: linear-gradient(90deg, var(--primary), var(--accent));
+  }
+  .service-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 18px 30px rgba(15, 23, 42, 0.1);
+  }
+  .service-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 16px;
+    display: grid;
+    place-items: center;
+    font-size: 26px;
+    background: linear-gradient(135deg, rgba(15,118,110,0.12), rgba(245,158,11,0.18));
+    margin-bottom: 14px;
+  }
+  .service-card h3 {
+    color: var(--secondary);
+    margin-bottom: 8px;
+    font-size: 20px;
+  }
+  .service-card p {
+    color: #4b5563;
+    font-size: 14px;
+  }
+
+  /* SECTION */
+  section { padding:50px 20px; max-width:1100px; margin:auto; }
+  .section-title {
+    text-align:center; font-size:30px; color:var(--secondary); margin-bottom:10px;
+    text-transform: uppercase; letter-spacing: .04em; font-weight: 800;
+  }
+  .section-sub { text-align:center; color:#4b5563; margin-bottom:30px; font-size:15px; line-height:1.7; }
+
+  /* ADMIN FORM / CONTROLS */
+  .admin-only { display: none; }
+  .admin-mode .admin-only { display: block; }
+  
+  .form-admin-box {
+    background: linear-gradient(180deg, #ffffff, #f8fafc); padding: 20px; border-radius: 14px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08); margin-bottom: 25px;
+    border-left: 5px solid var(--accent);
+  }
+  .form-admin-box input, .form-admin-box textarea, .form-admin-box select {
+    width: 100%; padding: 10px; margin-bottom: 10px;
+    border: 1px solid #d1d5db; border-radius: 6px; font-size: 14px;
+  }
+  .admin-help { color:#4b5563; font-size:13px; margin:0 0 12px; }
+  .admin-preview { width:88px; height:88px; object-fit:cover; border:1px solid #d1d5db; border-radius:8px; margin:4px 0 12px; background:#f3f4f6; }
+  .admin-file-label { font-size:13px; color:#555; display:block; margin-bottom:4px; }
+  .form-admin-box input[type="color"] { width:44px; height:36px; padding:2px; margin:4px 6px; vertical-align:middle; }
+  .form-admin-box input[type="range"] { width:100%; }
+  .archive-list { display:grid; gap:10px; margin-top:16px; }
+  .archive-item {
+    display:flex; align-items:center; justify-content:space-between; gap:12px;
+    padding:12px; border:1px solid #e5e7eb; border-radius:8px; background:#fff;
+  }
+  .archive-item-info { min-width:0; }
+  .archive-item-info strong { display:block; overflow-wrap:anywhere; }
+  .archive-item-info small { color:#6b7280; }
+  .archive-item-actions { display:flex; flex-wrap:wrap; gap:6px; flex-shrink:0; }
+  .archive-item-actions .archive-delete { background:#ef4444; }
+  .archive-empty { color:#6b7280; font-size:14px; padding:10px 0; }
+  .form-admin-box button {
+    background: var(--primary); color: white; border: none;
+    padding: 8px 16px; border-radius: 6px; cursor: pointer; font-weight: 600;
+  }
+
+  /* STRUKTUR PENGURUS */
+  .struktur-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 25px;
+  }
+  .pengurus-card {
+    background: white;
+    border-radius: 15px;
+    padding: 25px 15px;
+    text-align: center;
+    box-shadow: 0 4px 15px rgba(0,0,0,.08);
+    position: relative;
+    transition: transform 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .pengurus-card:hover { transform: translateY(-5px); }
+  .pengurus-card img {
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: top center;
+    border: 4px solid var(--primary);
+    margin-bottom: 15px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  }
+  .pengurus-card h4 { color: var(--secondary); font-size: 16px; font-weight: 700; }
+  .pengurus-card .jabatan { color: var(--accent); font-weight: 600; margin-top: 5px; font-size: 14px; }
+  
+  .admin-actions {
+    margin-top: 12px; display: none; gap: 6px; justify-content: center; z-index: 10;
+  }
+  .admin-mode .admin-actions { display: flex; }
+  .admin-actions button, .btn-edit-widget {
+    background: #f59e0b; color: white; border: none; padding: 6px 12px;
+    border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer;
+  }
+  .admin-actions button:hover, .btn-edit-widget:hover { background: #d97706; }
+  .btn-delete-item { background: #ef4444; color: white; border: none; padding: 6px 12px; border-radius: 8px; font-size: 12px; cursor: pointer; }
+
+  /* STATISTIK PENGUNJUNG */
+  .stat-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:20px; text-align:center; }
+  .stat-card {
+    background:white; padding:20px; border-radius:12px;
+    box-shadow:0 4px 15px rgba(0,0,0,.05); border-bottom:4px solid var(--primary);
+    transition: transform .2s ease, box-shadow .2s ease;
+  }
+  .stat-card:hover { transform: translateY(-4px); box-shadow: 0 16px 28px rgba(15,118,110,.12); }
+  .stat-card .icon { font-size:32px; margin-bottom:5px; }
+  .stat-card h3 { font-size:26px; color:var(--primary); margin:5px 0; }
+  .stat-card p { font-size:14px; color:#6b7280; }
+
+  .title-peta-mengkilap {
+    font-size: 28px; font-weight: 800; text-align: center; margin-bottom: 8px;
+    background: linear-gradient(110deg, #0f766e 0%, #38bdf8 25%, #ffffff 50%, #38bdf8 75%, #0f766e 100%);
+    background-size: 200% auto; color: transparent;
+    -webkit-background-clip: text; background-clip: text;
+    filter: drop-shadow(0px 1px 2px rgba(0,0,0,0.2));
+    animation: shineText 4s linear infinite;
+  }
+
+  /* WIDGET SIDEBAR KANAN */
+  .right-widget-container {
+    position: fixed; right: 15px; top: 50%; transform: translateY(-50%);
+    display: flex; flex-direction: column; gap: 12px; z-index: 998;
+  }
+  .widget-item {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+  .widget-btn {
+    width: 58px; height: 58px; background: linear-gradient(135deg, #ffffff, #ecfeff);
+    border-radius: 16px; box-shadow: 0 8px 22px rgba(15,118,110,0.18);
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden; border: 2px solid rgba(255,255,255,0.8); transition: 0.3s ease;
+    text-decoration: none; position: relative;
+  }
+  .widget-btn::before {
+    content: attr(title);
+    position: absolute;
+    right: 68px; top: 50%; transform: translateY(-50%);
+    background: rgba(15,23,42,0.9); color: white; padding: 6px 10px; border-radius: 8px;
+    font-size: 11px; white-space: nowrap; opacity: 0; pointer-events: none; transition: 0.2s;
+  }
+  .widget-btn:hover { transform: translateX(-4px) scale(1.04); }
+  .widget-btn:hover::before { opacity: 1; }
+  .widget-btn img { width: 100%; height: 100%; object-fit: cover; }
+  .widget-admin-btns {
+    display: none;
+    position: absolute;
+    right: 64px;
+    background: rgba(255,255,255,0.96);
+    padding: 6px;
+    border-radius: 10px;
+    box-shadow: 0 8px 20px rgba(15,23,42,0.18);
+    gap: 4px;
+    white-space: nowrap;
+    z-index: 999;
+  }
+  .admin-mode .widget-admin-btns { display: flex; }
+  .btn-edit-widget-icon {
+    background:#0f766e; color:#fff; border:0; padding:6px 9px;
+    border-radius:8px; font-size:12px; font-weight:600; cursor:pointer;
+  }
+  .btn-edit-widget-icon:hover { background:#115e59; }
+
+  .widget-list-admin {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 10px;
+  }
+  .widget-list-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #f3f4f6;
+    padding: 8px 12px;
+    border-radius: 6px;
+  }
+
+  /* IKLAN ADS */
+  .ads-container {
+    background:#ffffff; border:1px dashed #cbd5e1; border-radius:8px;
+    padding:8px; text-align:center; color:#64748b; margin:15px auto; max-width:728px;
+  }
+
+  /* BERITA GRID */
+  .berita-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:20px; }
+  .berita-card {
+    background:white; border-radius:12px; overflow:hidden; box-shadow:0 4px 15px rgba(0,0,0,.08);
+    display:flex; flex-direction:column; justify-content:space-between; position: relative; border: 1px solid rgba(15,118,110,0.06);
+    transition: transform .2s ease, box-shadow .2s ease;
+  }
+  .berita-card:hover { transform: translateY(-4px); box-shadow: 0 18px 30px rgba(15,23,42,.1); }
+  .berita-img-wrapper {
+    width: 100%;
+    height: 200px;
+    overflow: hidden;
+    background: #e5e7eb;
+  }
+  .berita-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+  .berita-body { padding:15px; flex-grow:1; }
+  .share-container { border-top:1px solid #f3f4f6; padding:10px 15px; background:#fafafa; display:flex; justify-content:space-between; align-items:center; }
+  .btn-share { padding:4px 8px; border-radius:4px; font-size:12px; color:white; text-decoration:none; border:none; cursor:pointer; }
+  .btn-delete { background:#ef4444; color:white; border:none; padding:6px 12px; border-radius:4px; font-size:12px; cursor:pointer; }
+
+  /* GALERI SLIDER */
+  .gallery-slider { position: relative; max-width: 800px; margin: auto; overflow: hidden; border-radius: 12px; background: #000; }
+  .slide-container { display: flex; transition: transform 0.5s ease-in-out; }
+  .slide-item { min-width: 100%; position: relative; height: 420px; background: #111827; }
+  .slide-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+  .slide-caption { position: absolute; bottom: 0; left: 0; right: 0; background: rgba(0,0,0,0.75); color: white; padding: 12px; text-align: center; }
+  .slider-btn { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(15,118,110,0.8); color: white; border: none; font-size: 20px; padding: 8px 14px; cursor: pointer; border-radius: 50%; z-index:10; }
+
+  /* KONTAK & PETA GRID */
+  .kontak-map-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .map-box iframe { width: 100%; height: 260px; border: 0; border-radius: 8px; }
+
+  /* MODAL */
+  .modal { display:none; position:fixed; inset:0; background:rgba(0,0,0,.6); z-index:1000; justify-content:center; align-items:center; }
+  .modal.active { display:flex; }
+  .modal-content { background:white; padding:25px; border-radius:12px; width:90%; max-width:450px; }
+  .modal-content input, .modal-content textarea { width:100%; padding:10px; margin:10px 0; border:1px solid #ccc; border-radius:6px; font-size: 14px; }
+
+  /* FLOATING WA */
+  .wa-float {
+    position: fixed; bottom: 20px; right: 20px; width: 62px; height: 62px;
+    background: linear-gradient(135deg, #25d366, #1ebc5d); color: white;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 50%; text-decoration: none; font-size: 28px;
+    box-shadow: 0 12px 25px rgba(37, 211, 102, 0.45); z-index: 997;
+    border: 4px solid rgba(255,255,255,0.7);
+  }
+
+  /* FOOTER */
+  footer {
+    background: linear-gradient(135deg, #0f172a, #111827 60%, #0f172a);
+    color: white;
+    padding: 26px 18px 30px;
+    margin-top: 30px;
+    border-top: 1px solid rgba(255,255,255,0.06);
+  }
+  .footer-inner {
+    max-width: 1180px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  .text-copyright-dongker {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: .035em;
+    display: inline-block;
+    background: linear-gradient(110deg, #111827 0%, #6b7280 22%, #ffffff 48%, #9ca3af 68%, #111827 100%);
+    background-size: 200% auto; color: transparent;
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-stroke: .2px rgba(255,255,255,.45);
+    filter: drop-shadow(0px 1px 2px rgba(255,255,255,0.28));
+    animation: shineText 4s linear infinite;
+  }
+  @media(max-width:480px) {
+    .text-copyright-dongker { font-size: 9px; letter-spacing: .015em; }
+  }
+  .footer-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: linear-gradient(135deg, #22c55e, #16a34a);
+    color: white;
+    border: none;
+    padding: 12px 18px;
+    border-radius: 999px;
+    text-decoration: none;
+    font-weight: 700;
+    box-shadow: 0 10px 22px rgba(22, 163, 74, 0.3);
+  }
+
+  @media(max-width:768px){
+    header { flex-direction:column; gap:12px; padding:15px; }
+    .logo { width: 100%; justify-content: center; text-align: center; }
+    .logo h1 { font-size: 20px; }
+    nav ul { flex-wrap:wrap; justify-content:center; gap:10px 14px; }
+    nav a { font-size: 13px; }
+    .btn-login { width: 100%; max-width: 220px; }
+    .hero { padding: 40px 18px 28px; }
+    .hero-inner { grid-template-columns: 1fr; }
+    .hero-copy h2 { font-size: 30px; text-align: center; }
+    .hero-copy p { text-align: center; margin-left: auto; margin-right: auto; }
+    .cta-row { justify-content: center; }
+    .highlights { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .service-grid { grid-template-columns: 1fr; }
+    .kontak-map-grid { grid-template-columns: 1fr; }
+    .slide-item { height: 280px; }
+    .footer-inner { justify-content: center; text-align: center; }
+    .right-widget-container { right: 10px; }
+    .widget-btn { width: 52px; height: 52px; }
+    .archive-item { align-items:flex-start; flex-direction:column; }
+  }
+
+  @media(max-width:480px){
+    .highlights { grid-template-columns: 1fr; }
+    .hero-copy h2 { font-size: 26px; }
+    .hero-badges { justify-content: center; }
+    .hero-badge { font-size: 11px; }
+    .section-title { font-size: 24px; }
+    .service-card h3 { font-size: 18px; }
+    .wa-float { width: 56px; height: 56px; font-size: 24px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="logo">
+    <div class="logo-image-wrap">
+      <img id="siteLogo" src="image/logo-posbankum.jpg" alt="Logo POSBANKUM" class="logo-img" onerror="this.onerror=null;this.src='image/logo%20posbankum.jpg'"/>
+      <button type="button" class="logo-edit-button" onclick="bukaEditLogo()" aria-label="Edit logo POSBANKUM" title="Edit logo">✏️</button>
+      <input type="file" id="siteLogoQuickFile" accept="image/*" hidden />
+    </div>
+    <div>
+      <h1 id="siteName">POSBANKUM DESA CIGENTUR</h1>
+      <p id="siteTagline">Pos Bantuan Hukum - Pelayanan Hukum Gratis</p>
+    </div>
+  </div>
+  <nav>
+    <ul>
+      <li><a href="#beranda">Beranda</a></li>
+      <li><a href="#berita">Berita</a></li>
+      <li><a href="#galeri">Galeri</a></li>
+      <li><a href="#struktur">Struktur</a></li>
+      <li><a href="#statistik">Statistik</a></li>
+      <li><a href="#pengaduan">Pengaduan</a></li>
+      <li><a href="#kontak">Kontak</a></li>
+    </ul>
+  </nav>
+  <button class="btn-login" id="btnLogin" onclick="toggleLogin()">🔐 Admin</button>
+</header>
+
+<!-- WIDGET COVER KANAN -->
+<div class="right-widget-container" id="widgetContainer"></div>
+
+<!-- HERO -->
+<div class="hero" id="beranda">
+  <img id="heroBackground" class="hero-background" src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=1600" alt="" />
+  <div class="hero-inner">
+    <div class="hero-copy">
+      <div class="hero-badges">
+        <span class="hero-badge">⚖️ Layanan Hukum Gratis</span>
+        <span class="hero-badge">🤝 Pendampingan Masyarakat</span>
+      </div>
+      <h2 id="heroTitle">SELAMAT DATANG DI POSBANKUM DESA CIGENTUR</h2>
+      <p id="heroDescription">Melayani masyarakat dengan bantuan hukum gratis, konsultasi cepat, dan pendampingan yang profesional untuk mewujudkan keadilan yang mudah dijangkau.</p>
+      <div class="cta-row">
+        <a class="primary-btn" href="#pengaduan">📩 Ajukan Pengaduan</a>
+        <a class="secondary-btn" href="#berita">📖 Lihat Berita</a>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="floating-panel hero-card-main">
+        <p style="font-size:12px; letter-spacing:.12em; text-transform:uppercase; color:rgba(255,255,255,0.75); font-weight:700;">Kinerja Layanan</p>
+        <h3 style="margin:10px 0 8px; font-size:28px; color:white;">+1.240</h3>
+        <p style="font-size:14px; color:rgba(255,255,255,0.8);">Masyarakat telah memperoleh pendampingan hukum dan edukasi.</p>
+        <div class="hero-graph"></div>
+      </div>
+      <div class="hero-metrics">
+        <span style="color:#64748b; font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:.08em;">Aktif</span>
+        <strong>24/7</strong>
+        <small style="font-size:12px; color:#475569;">Dukungan wilayah Desa</small>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="highlights">
+  <div class="highlight-card">
+    <div class="icon">🏛️</div>
+    <h3>Gratis</h3>
+    <p>Layanan konsultasi dan pendampingan hukum untuk warga Desa.</p>
+  </div>
+  <div class="highlight-card">
+    <div class="icon">🧑‍⚖️</div>
+    <h3>Profesional</h3>
+    <p>Tim pendamping siap membantu dari awal hingga penyelesaian.</p>
+  </div>
+  <div class="highlight-card">
+    <div class="icon">📍</div>
+    <h3>Terjangkau</h3>
+    <p>Informasi dan akses mudah dijangkau di lingkungan sekitar.</p>
+  </div>
+  <div class="highlight-card">
+    <div class="icon">🔒</div>
+    <h3>Rahasia</h3>
+    <p>Data dan permasalahan klien dilindungi dengan prinsip kerahasiaan.</p>
+  </div>
+</div>
+
+<!-- IKLAN BANNER -->
+<div class="ads-container">
+  <small style="font-size:10px; color:#94a3b8;">SLOT IKLAN / SPONSOR</small>
+</div>
+
+<!-- PANEL KHUSUS ADMIN KELOLA WIDGET SIDEBAR -->
+<section class="admin-only" style="padding-bottom: 0;">
+  <div class="form-admin-box">
+    <h3>⚙️ Kelola Identitas & Gambar Website</h3>
+    <p class="admin-help">Unggah gambar dari galeri HP atau file di komputer. Perubahan tersimpan di browser/perangkat ini; gunakan cadangan untuk memindahkan data ke perangkat lain.</p>
+    <input type="text" id="siteNameInput" placeholder="Nama website" />
+    <input type="text" id="siteTaglineInput" placeholder="Keterangan di bawah nama" />
+    <input type="text" id="heroTitleInput" placeholder="Judul halaman utama" />
+    <textarea id="heroDescriptionInput" rows="3" placeholder="Keterangan halaman utama"></textarea>
+    <input type="text" id="contactAddressInput" placeholder="Alamat layanan" />
+    <input type="tel" id="contactPhoneInput" placeholder="Nomor WhatsApp" />
+    <input type="email" id="contactEmailInput" placeholder="Email layanan" />
+    <input type="text" id="contactHoursInput" placeholder="Jam layanan" />
+    <input type="url" id="mapEmbedInput" placeholder="URL sematan Google Maps" />
+    <label class="admin-file-label" for="siteLogoFile">Ganti logo:</label>
+    <input type="file" id="siteLogoFile" accept="image/*" />
+    <input type="text" id="siteLogoUrl" placeholder="Atau alamat URL logo" />
+    <img id="siteLogoPreview" class="admin-preview" alt="Pratinjau logo" />
+    <label class="admin-file-label" for="heroImageFile">Ganti gambar sampul:</label>
+    <input type="file" id="heroImageFile" accept="image/*" />
+    <input type="text" id="heroImageUrl" placeholder="Atau alamat URL gambar sampul" />
+    <img id="heroImagePreview" class="admin-preview" alt="Pratinjau gambar sampul" />
+    <hr style="margin:16px 0; border:0; border-top:1px solid #e5e7eb;" />
+    <h4 style="margin-bottom:8px;">🎨 Atur Tema & Latar Website</h4>
+    <label class="admin-file-label" for="themePresetInput">Tema warna:</label>
+    <select id="themePresetInput" onchange="pilihTemaTampilan()">
+      <option value="green">Hijau POSBANKUM</option>
+      <option value="blue">Biru</option>
+      <option value="purple">Ungu</option>
+      <option value="rose">Merah muda</option>
+      <option value="custom">Kustom</option>
+    </select>
+    <div style="display:flex; gap:12px; flex-wrap:wrap; margin-bottom:10px;">
+      <label>Warna utama <input type="color" id="themePrimaryInput" aria-label="Warna utama tema" onchange="tandaiTemaKustom()" /></label>
+      <label>Warna sekunder <input type="color" id="themeSecondaryInput" aria-label="Warna sekunder tema" onchange="tandaiTemaKustom()" /></label>
+      <label>Warna aksen <input type="color" id="themeAccentInput" aria-label="Warna aksen tema" onchange="tandaiTemaKustom()" /></label>
+      <label>Warna latar dasar <input type="color" id="pageBackgroundColorInput" aria-label="Warna dasar latar halaman" onchange="tandaiTemaKustom()" /></label>
+    </div>
+    <label class="admin-file-label" for="pageBackgroundFile">Gambar latar halaman (HP/komputer):</label>
+    <input type="file" id="pageBackgroundFile" accept="image/*" />
+    <input type="text" id="pageBackgroundUrl" placeholder="Atau masukkan URL gambar latar (https://...)" />
+    <img id="pageBackgroundPreview" class="admin-preview" alt="Pratinjau gambar latar" />
+    <label class="admin-file-label" for="pageBackgroundOpacityInput">Kekuatan tampilan gambar latar:</label>
+    <input type="range" id="pageBackgroundOpacityInput" min="0" max="60" step="5" />
+    <label class="admin-file-label" for="pageBackgroundAnimationInput">Animasi latar berjalan:</label>
+    <select id="pageBackgroundAnimationInput">
+      <option value="none">Tanpa animasi</option>
+      <option value="zoom">Zoom perlahan</option>
+      <option value="drift">Bergerak perlahan</option>
+    </select>
+    <p class="admin-help">Gunakan gambar latar sederhana dan atur kekuatannya agar teks tetap nyaman dibaca.</p>
+    <button type="button" onclick="simpanPengaturan()">💾 Simpan Pengaturan Website</button>
+    <hr style="margin:16px 0; border:0; border-top:1px solid #e5e7eb;" />
+    <strong>Cadangan konten & gambar</strong>
+    <p class="admin-help">Ekspor untuk mengunduh cadangan, lalu impor file cadangan di perangkat lain.</p>
+    <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
+      <button type="button" onclick="eksporCadangan()">⬇️ Ekspor Cadangan</button>
+      <label for="importCadanganFile" class="btn-edit-widget" style="padding:8px 16px; cursor:pointer;">⬆️ Impor Cadangan</label>
+      <input type="file" id="importCadanganFile" accept=".json,application/json" style="display:none;" onchange="imporCadangan(event)" />
+    </div>
+    <hr style="margin:16px 0; border:0; border-top:1px solid #e5e7eb;" />
+    <strong>☁️ Sinkronisasi Google Drive</strong>
+    <p class="admin-help">Website menyinkronkan konten dan gambar publik melalui Apps Script. Arsip dokumen tetap privat di perangkat ini dan tidak ikut dikirim ke Drive.</p>
+    <label class="admin-file-label" for="cloudApiUrlInput">URL Web App Apps Script (/exec):</label>
+    <input type="url" id="cloudApiUrlInput" placeholder="https://script.google.com/macros/s/.../exec" />
+    <label class="admin-file-label" for="cloudAdminTokenInput">Token Admin Apps Script:</label>
+    <input type="password" id="cloudAdminTokenInput" autocomplete="off" placeholder="Tempel token admin dari log eksekusi Apps Script" />
+    <button type="button" id="cloudConnectButton" onclick="hubungkanCloud()">🔗 Hubungkan dan Simpan Data Website ke Drive</button>
+    <p id="cloudSyncStatus" class="admin-help" role="status" aria-live="polite">Memeriksa koneksi penyimpanan online...</p>
+  </div>
+</section>
+
+<section class="admin-only" id="arsipAdmin" style="padding-bottom:0;">
+  <div class="form-admin-box">
+    <h3>🗂️ Arsip Dokumen POSBANKUM</h3>
+    <p class="admin-help">Berkas disimpan secara privat di browser/perangkat ini. Arsip tidak dikirim atau ditautkan ke email.</p>
+    <label class="admin-file-label" for="archiveFile">Pilih berkas dari HP atau komputer (maks. 25 MB per berkas):</label>
+    <input type="file" id="archiveFile" />
+    <input type="text" id="archiveNote" placeholder="Keterangan arsip (opsional)" />
+    <button type="button" id="archiveSaveButton" onclick="simpanArsip()">💾 Simpan ke Arsip</button>
+    <div id="archiveStatus" class="admin-help" role="status" aria-live="polite"></div>
+    <div id="archiveList" class="archive-list"></div>
+  </div>
+</section>
+
+<section class="admin-only" style="padding-bottom: 0;">
+  <div class="form-admin-box">
+    <h3>🔗 Kelola Link Widget Sidebar Kanan</h3>
+    <p style="font-size:13px; color:#666; margin-bottom:10px;">Atur, tambah, atau hapus link tautan widget yang muncul di sebelah kanan layar.</p>
+    
+    <h4 id="formWidgetTitle" style="margin:12px 0 8px;">➕ Tambah Widget Baru</h4>
+    <input type="text" id="widgetJudul" placeholder="Judul Widget (Contoh: Web Desa)" />
+    <input type="text" id="widgetUrl" placeholder="URL Target Tautan (Contoh: https://cigentur.desa.id)" />
+    <input type="text" id="widgetIcon" placeholder="URL Icon / Gambar Logo Widget" />
+    <label class="admin-file-label" for="widgetIconFile">Atau pilih ikon dari perangkat:</label>
+    <input type="file" id="widgetIconFile" accept="image/*" />
+    <div style="display:flex; gap:10px; flex-wrap:wrap;">
+      <button type="button" id="btnSimpanWidget" onclick="simpanWidget()">➕ Tambah Widget</button>
+      <button type="button" id="btnBatalEditWidget" onclick="resetFormWidget()" style="background:#6b7280; display:none;">Batal Edit</button>
+    </div>
+    <input type="file" id="widgetIconQuickFile" accept="image/*" hidden />
+
+    <div class="widget-list-admin" id="widgetListAdmin"></div>
+  </div>
+</section>
+
+<section>
+  <h2 class="section-title">Profil & Visi Misi</h2>
+  <p class="section-sub">Komitmen POSBANKUM Desa Cigentur dalam memberikan pelayanan hukum yang adil, terbuka, dan bermanfaat bagi masyarakat</p>
+  <div class="service-grid" style="grid-template-columns: 1.3fr 1fr; align-items: stretch;">
+    <div class="service-card" style="min-height: 100%;">
+      <div class="service-icon">🏛️</div>
+      <h3>Profil</h3>
+      <p style="margin-bottom: 10px;">POSBANKUM Desa Cigentur adalah unit layanan bantuan hukum yang hadir untuk mendukung masyarakat dalam memahami hak, kewajiban, serta solusi terhadap persoalan hukum yang dihadapi secara sederhana dan akuntabel.</p>
+      <p>Pos ini berfungsi sebagai pintu akses informasi hukum, pendampingan, serta edukasi agar masyarakat dapat memperoleh pelayanan yang cepat, ramah, dan mudah dijangkau.</p>
+    </div>
+    <div class="service-card" style="min-height: 100%;">
+      <div class="service-icon">🎯</div>
+      <h3>Visi</h3>
+      <p>Mewujudkan masyarakat Desa Cigentur yang sadar hukum, berkeadilan, dan sejahtera melalui layanan bantuan hukum yang inklusif dan profesional.</p>
+      <h3 style="margin-top: 18px;">Misi</h3>
+      <ul style="padding-left: 18px; color: #4b5563; line-height: 1.9; font-size: 14px;">
+        <li>Menyediakan layanan konsultasi hukum gratis.</li>
+        <li>Meningkatkan pemahaman hukum masyarakat desa.</li>
+        <li>Memberdayakan pendampingan hukum yang responsif.</li>
+        <li>Mengoptimalkan akses informasi legal bagi seluruh warga.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2 class="section-title">Layanan Kami</h2>
+  <p class="section-sub">Solusi bantuan hukum yang sederhana, cepat, dan berdampak nyata bagi masyarakat</p>
+  <div class="service-grid">
+    <div class="service-card">
+      <div class="service-icon">⚖️</div>
+      <h3>Konsultasi Hukum</h3>
+      <p>Memberikan panduan awal untuk memahami permasalahan hukum yang sedang dihadapi.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">📝</div>
+      <h3>Dokumen Legal</h3>
+      <p>Membantu penyusunan surat, pengajuan, dan kebutuhan administrasi hukum sederhana.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">🤝</div>
+      <h3>Pendampingan Mediasi</h3>
+      <p>Menyediakan dukungan saat proses perdamaian, negosiasi, atau penyelesaian konflik.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">📣</div>
+      <h3>Edukasi Masyarakat</h3>
+      <p>Memperluas pemahaman hukum melalui sosialisasi dan penyuluhan yang mudah dipahami.</p>
+    </div>
+  </div>
+</section>
+
+<!-- BERITA -->
+<section id="berita">
+  <h2 class="section-title">Berita & Artikel</h2>
+  <p class="section-sub">Informasi terbaru kegiatan POSBANKUM Desa Cigentur</p>
+
+  <div class="form-admin-box admin-only">
+    <h3 id="formBeritaTitle">➕ Tambah Berita Baru</h3>
+    <input type="text" id="inputJudul" placeholder="Judul Berita" />
+    
+    <label style="font-size:13px; color:#555; display:block; margin-bottom:4px;">Upload Gambar Berita (JPG/JPEG/PNG):</label>
+    <input type="file" id="inputGambarFile" accept="image/*" />
+    <input type="text" id="inputGambarUrl" placeholder="Atau masukkan URL Gambar" style="margin-top:5px;" />
+    
+    <textarea id="inputIsi" rows="3" placeholder="Isi Berita"></textarea>
+    <div style="display: flex; gap: 10px;">
+      <button type="button" id="btnSimpanBerita" onclick="tambahBerita()" style="flex: 1;">Simpan Berita</button>
+      <button type="button" id="btnBatalEditBerita" onclick="resetFormBerita()" style="flex: 1; background: #6b7280; display: none;">Batal Edit</button>
+    </div>
+  </div>
+
+  <div class="berita-grid" id="beritaGrid"></div>
+</section>
+
+<!-- GALERI SLIDER -->
+<section id="galeri">
+  <h2 class="section-title">Galeri Kegiatan</h2>
+  <p class="section-sub">Dokumentasi foto kegiatan POSBANKUM Desa Cigentur</p>
+
+  <div class="form-admin-box admin-only">
+    <h3 id="formGaleriTitle">🖼️ Tambah Foto Galeri</h3>
+    <label class="admin-file-label" for="galeriFile">Pilih foto dari perangkat:</label>
+    <input type="file" id="galeriFile" accept="image/*" />
+    <input type="text" id="galeriUrl" placeholder="Atau masukkan URL Foto" style="margin-top:5px;" />
+    
+    <input type="text" id="galeriKet" placeholder="Keterangan Foto" />
+    <button type="button" id="btnSimpanGaleri" onclick="tambahGaleri()">Unggah Foto</button>
+    <button type="button" id="btnBatalEditGaleri" onclick="resetFormGaleri()" style="background:#6b7280; display:none;">Batal Edit</button>
+  </div>
+
+  <div class="gallery-slider">
+    <button class="slider-btn" style="left:10px;" onclick="moveSlide(-1)">❮</button>
+    <div class="slide-container" id="slideContainer"></div>
+    <button class="slider-btn" style="right:10px;" onclick="moveSlide(1)">❯</button>
+  </div>
+</section>
+
+<!-- STRUKTUR KEPENGURUSAN -->
+<section id="struktur">
+  <h2 class="section-title">Struktur Kepengurusan</h2>
+  <p class="section-sub">Pengurus POSBANKUM Desa Cigentur Periode 2025-2027</p>
+
+  <div class="form-admin-box admin-only">
+    <h3 id="formPengurusTitle">➕ Tambah Anggota Pengurus Baru</h3>
+    <input type="text" id="tambahNama" placeholder="Nama Lengkap & Gelar" />
+    <input type="text" id="tambahJabatan" placeholder="Jabatan (Contoh: Paralegal / Ketua)" />
+    <label style="font-size:13px; color:#555; display:block; margin-bottom:4px;">Upload Foto Format JPG/JPEG/PNG:</label>
+    <input type="file" id="tambahFotoFile" accept="image/*" />
+    <input type="text" id="tambahFotoUrl" placeholder="Atau masukkan URL Foto" style="margin-top:5px;" />
+    <div style="display:flex; gap:10px; flex-wrap:wrap;">
+      <button type="button" id="btnSimpanPengurus" onclick="simpanPengurus()">➕ Tambah Pengurus</button>
+      <button type="button" id="btnBatalEditPengurus" onclick="resetFormPengurus()" style="background:#6b7280; display:none;">Batal Edit</button>
+    </div>
+  </div>
+
+  <div class="struktur-grid" id="strukturGrid"></div>
+</section>
+
+<!-- STATISTIK PENGUNJUNG -->
+<section id="statistik">
+  <h2 class="section-title">Statistik Pengunjung</h2>
+  <p class="section-sub">Laporan Kunjungan Portal POSBANKUM Desa Cigentur</p>
+  <div class="stat-grid">
+    <div class="stat-card">
+      <div class="icon">👤</div>
+      <h3 id="statHariIni">0</h3>
+      <p>Hari Ini</p>
+    </div>
+    <div class="stat-card">
+      <div class="icon">📅</div>
+      <h3 id="statMingguIni">0</h3>
+      <p>Minggu Ini</p>
+    </div>
+    <div class="stat-card">
+      <div class="icon">📊</div>
+      <h3 id="statTotal">0</h3>
+      <p>Total Pengunjung</p>
+    </div>
+    <div class="stat-card">
+      <div class="icon">🟢</div>
+      <h3 id="statOnline">1</h3>
+      <p>Pengunjung Online</p>
+    </div>
+  </div>
+</section>
+
+<!-- FORM PENGADUAN -->
+<section id="pengaduan">
+  <h2 class="section-title">Formulir Pengaduan Hukum</h2>
+  <div style="background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,.08); max-width: 650px; margin: auto;">
+    <form onsubmit="kirimPengaduanWA(event)">
+      <input type="text" id="aduanNama" required placeholder="Nama Lengkap" style="width:100%; padding:10px; margin-bottom:10px; border:1px solid #ccc; border-radius:6px;"/>
+      <input type="tel" id="aduanHp" required placeholder="Nomor Telepon / WA" style="width:100%; padding:10px; margin-bottom:10px; border:1px solid #ccc; border-radius:6px;"/>
+      <textarea id="aduanPesan" required rows="4" placeholder="Uraikan permasalahan hukum..." style="width:100%; padding:10px; margin-bottom:10px; border:1px solid #ccc; border-radius:6px;"></textarea>
+      <button type="submit" style="width:100%; background:#25d366; color:white; border:none; padding:12px; border-radius:6px; font-weight:bold; cursor:pointer;">
+        📱 Kirim Pengaduan via WhatsApp
+      </button>
+    </form>
+  </div>
+</section>
+
+<!-- PETA & KONTAK -->
+<section id="kontak">
+  <h2 class="title-peta-mengkilap">Peta Desa Cigentur</h2>
+  <p class="section-sub">Lokasi Layanan Bantuan Hukum POSBANKUM Desa Cigentur</p>
+
+  <div class="kontak-map-grid">
+    <div class="map-box">
+      <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3959.980649710373!2d107.794628!3d-7.011531!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e68c17ecf45dd3f%3A0x868cb6788a87d09b!2sDesa%20Cigentur%2C%20Paseh%2C%20Bandung%2C%20West%20Java!5e0!3m2!1sid!2sid!4v1700000000000!5m2!1sid!2sid" allowfullscreen="" loading="lazy"></iframe>
+    </div>
+    <div style="background:white; padding:25px; border-radius:12px; box-shadow:0 4px 15px rgba(0,0,0,.08);">
+      <p style="margin-bottom:10px;">📍 <strong>Alamat:</strong> <span id="contactAddress">Kantor Desa Cigentur, Jl. Cibuah No. 29 RT.001 RW.005, Kec. Paseh, Kab. Bandung 40383</span></p>
+      <p style="margin-bottom:10px;">📞 <strong>WhatsApp:</strong> <span id="contactPhone">087734112044</span></p>
+      <p style="margin-bottom:10px;">📧 <strong>Email:</strong> <span id="contactEmail">posbankum.cigenturbdg@gmail.com</span></p>
+      <p>🕒 <strong>Layanan:</strong> <span id="contactHours">Senin - Jumat (08.00 - 15.00 WIB)</span></p>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <p class="text-copyright-dongker">© 2026posbankumdesacigentur|webdesign@Nurdin Hiyatulloh el-ghifari |All Rights Reserved</p>
+  </div>
+</footer>
+
+<!-- MODAL LOGIN ADMIN -->
+<div class="modal" id="modalLogin">
+  <div class="modal-content">
+    <h3>🔐 Login Admin</h3>
+    <p style="font-size:13px; color:#666;">Masukkan password admin (default: admin123)</p>
+    <input type="password" id="inputPassword" placeholder="Password" />
+    <div style="display:flex; gap:10px; margin-top:10px;">
+      <button type="button" onclick="prosesLogin()" style="flex:1; background:var(--primary); color:white; border:none; padding:10px; border-radius:6px; cursor:pointer;">Masuk</button>
+      <button type="button" onclick="tutupModalLogin()" style="flex:1; background:#ccc; border:none; padding:10px; border-radius:6px; cursor:pointer;">Batal</button>
+    </div>
+  </div>
+</div>
+
+<!-- WA FLOATING -->
+<a id="waFloat" href="https://wa.me/6287734112044" target="_blank" class="wa-float" aria-label="WA Konsultasi">💬</a>
+
+<script>
+  let isAdmin = false;
+  let editIndex = null;
+  let editWidgetIndex = null;
+  let editPengurusIndex = null;
+  let editGaleriIndex = null;
+  let editWidgetIconIndex = null;
+  let archiveDatabasePromise = null;
+  let cloudLoadPromise = Promise.resolve(null);
+  let cloudSyncTimer = null;
+  let cloudSyncBusy = false;
+  let cloudSyncRequested = false;
+  let cloudHasState = false;
+  let cloudReadSucceeded = false;
+  // Set this to the deployed Apps Script URL ending in /exec before publishing the site.
+  let POSBANKUM_CLOUD_API_URL = localStorage.getItem('posbankum_cloud_api_url') ||
+    'https://script.google.com/macros/s/AKfycbwtY839Y21gogMgqCSwvjOKVoD8vrbG-bBtvMK5D2-zM2sxwKBI9Nk8CMRSPMCqAkmE/exec';
+  const defaultSettings = {
+    siteName: 'POSBANKUM DESA CIGENTUR',
+    siteTagline: 'Pos Bantuan Hukum - Pelayanan Hukum Gratis',
+    heroTitle: 'SELAMAT DATANG DI POSBANKUM DESA CIGENTUR',
+    heroDescription: 'Melayani masyarakat dengan bantuan hukum gratis, konsultasi cepat, dan pendampingan yang profesional untuk mewujudkan keadilan yang mudah dijangkau.',
+    address: 'Kantor Desa Cigentur, Jl. Cibuah No. 29 RT.001 RW.005, Kec. Paseh, Kab. Bandung 40383',
+    phone: '087734112044',
+    email: 'posbankum.cigenturbdg@gmail.com',
+    hours: 'Senin - Jumat (08.00 - 15.00 WIB)',
+    mapEmbed: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3959.980649710373!2d107.794628!3d-7.011531!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e68c17ecf45dd3f%3A0x868cb6788a87d09b!2sDesa%20Cigentur%2C%20Paseh%2C%20Bandung%2C%20West%20Java!5e0!3m2!1sid!2sid!4v1700000000000!5m2!1sid!2sid',
+    logo: 'image/logo-posbankum.jpg',
+    heroImage: 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=1600',
+    themePreset: 'green',
+    themePrimary: '#0f766e',
+    themeSecondary: '#065f46',
+    themeAccent: '#f59e0b',
+    pageBackgroundColor: '#f9fafb',
+    pageBackgroundImage: '',
+    pageBackgroundOpacity: 20,
+    pageBackgroundAnimation: 'none'
+  };
+  const themePalettes = {
+    green: { themePrimary: '#0f766e', themeSecondary: '#065f46', themeAccent: '#f59e0b', pageBackgroundColor: '#f9fafb', headerStart: 'rgba(7, 89, 82, 0.97)', headerEnd: 'rgba(5, 67, 56, 0.96)', heroStart: 'rgba(15,118,110,.85)', heroEnd: 'rgba(6,95,70,.85)' },
+    blue: { themePrimary: '#2563eb', themeSecondary: '#1e3a8a', themeAccent: '#f59e0b', pageBackgroundColor: '#f8fafc', headerStart: 'rgba(30, 58, 138, 0.97)', headerEnd: 'rgba(30, 64, 175, 0.96)', heroStart: 'rgba(37,99,235,.85)', heroEnd: 'rgba(30,58,138,.88)' },
+    purple: { themePrimary: '#7c3aed', themeSecondary: '#5b21b6', themeAccent: '#fbbf24', pageBackgroundColor: '#faf5ff', headerStart: 'rgba(91, 33, 182, 0.97)', headerEnd: 'rgba(76, 29, 149, 0.96)', heroStart: 'rgba(124,58,237,.85)', heroEnd: 'rgba(91,33,182,.88)' },
+    rose: { themePrimary: '#e11d48', themeSecondary: '#9f1239', themeAccent: '#f59e0b', pageBackgroundColor: '#fff7f7', headerStart: 'rgba(159, 18, 57, 0.97)', headerEnd: 'rgba(136, 19, 55, 0.96)', heroStart: 'rgba(225,29,72,.85)', heroEnd: 'rgba(159,18,57,.88)' }
+  };
+  let settings = {
+    ...defaultSettings,
+    ...JSON.parse(localStorage.getItem('posbankum_settings') || '{}')
+  };
+
+  function setStatusCloud(message, isError = false) {
+    const status = document.getElementById('cloudSyncStatus');
+    if (!status) return;
+    status.textContent = message;
+    status.style.color = isError ? '#b91c1c' : '';
+  }
+
+  function stateWebsite() {
+    return { settings, widgets, berita, galeri, pengurus };
+  }
+
+  function validasiStateCloud(state) {
+    return state && state.settings && typeof state.settings === 'object' &&
+      Array.isArray(state.widgets) && Array.isArray(state.berita) &&
+      Array.isArray(state.galeri) && Array.isArray(state.pengurus);
+  }
+
+  function terapkanStateCloud(state) {
+    if (!validasiStateCloud(state)) throw new Error('Format data website dari Drive tidak valid.');
+    cloudApplying = true;
+    try {
+      settings = { ...defaultSettings, ...state.settings };
+      widgets = state.widgets;
+      berita = state.berita;
+      galeri = state.galeri;
+      pengurus = state.pengurus;
+      [
+        ['posbankum_settings', settings],
+        ['posbankum_widgets', widgets],
+        ['posbankum_berita', berita],
+        ['posbankum_galeri', galeri],
+        ['posbankum_pengurus', pengurus]
+      ].forEach(([key, value]) => {
+        try {
+          localStorage.setItem(key, JSON.stringify(value));
+        } catch (error) {
+          console.warn(`Data ${key} hanya aktif di halaman ini karena penyimpanan browser penuh.`, error);
+        }
+      });
+    } finally {
+      cloudApplying = false;
+    }
+    terapkanPengaturan();
+    renderWidgets();
+    renderBerita();
+    renderGaleri();
+    renderStruktur();
+  }
+
+  function ambilStateCloud() {
+    return new Promise((resolve, reject) => {
+      const callbackName = `posbankumCloud${Date.now()}${Math.floor(Math.random() * 100000)}`;
+      const script = document.createElement('script');
+      const separator = POSBANKUM_CLOUD_API_URL.includes('?') ? '&' : '?';
+      const timeout = setTimeout(() => finish(new Error('Waktu tunggu Google Drive habis.')), 20000);
+      const finish = (error, result) => {
+        clearTimeout(timeout);
+        script.remove();
+        delete window[callbackName];
+        if (error) reject(error);
+        else resolve(result);
+      };
+      window[callbackName] = data => finish(null, data);
+      script.onerror = () => finish(new Error('Google Drive tidak dapat dihubungi. Periksa URL Apps Script dan izin deployment.'));
+      script.src = `${POSBANKUM_CLOUD_API_URL}${separator}callback=${callbackName}&_=${Date.now()}`;
+      document.head.append(script);
+    });
+  }
+
+  async function muatStateCloudPublik() {
+    if (!POSBANKUM_CLOUD_API_URL) {
+      setStatusCloud('Belum tersambung. URL Web App Apps Script perlu dipasang pada website.');
+      return null;
+    }
+    try {
+      const response = await ambilStateCloud();
+      if (!response || !response.ok) throw new Error('Google Drive mengirim data yang tidak valid.');
+      cloudReadSucceeded = true;
+      if (response.state) {
+        terapkanStateCloud(response.state);
+        cloudHasState = true;
+      }
+      setStatusCloud(response.state ? '✅ Konten website dimuat dari Google Drive.' : 'Drive tersambung. Simpan perubahan pertama untuk menerbitkan konten.');
+      return response;
+    } catch (error) {
+      console.error('Gagal memuat konten dari Google Drive:', error);
+      setStatusCloud(`Gagal memuat konten online: ${error.message}`, true);
+      return null;
+    }
+  }
+
+  async function kirimStateCloud() {
+    const token = sessionStorage.getItem('posbankum_cloud_admin_token');
+    if (!token) {
+      setStatusCloud('Masuk admin lalu masukkan token Apps Script untuk menyimpan perubahan online.', true);
+      return;
+    }
+
+    const syncId = `${Date.now()}-${Math.random().toString(36).slice(2)}`;
+    const request = { token, syncId, state: stateWebsite() };
+    await fetch(POSBANKUM_CLOUD_API_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'text/plain;charset=UTF-8' },
+      body: JSON.stringify(request)
+    });
+
+    for (let attempt = 0; attempt < 8; attempt += 1) {
+      await new Promise(resolve => setTimeout(resolve, 700));
+      const response = await ambilStateCloud();
+      if (response && response.ok && response.syncId === syncId && response.state) {
+        terapkanStateCloud(response.state);
+        setStatusCloud('✅ Perubahan tersimpan di Google Drive dan langsung diterbitkan di website.');
+        return;
+      }
+    }
+    throw new Error('Drive belum mengonfirmasi penyimpanan. Periksa token, deployment Apps Script, dan coba simpan lagi.');
+  }
+
+  function jadwalkanSinkronisasiCloud() {
+    if (!POSBANKUM_CLOUD_API_URL || cloudApplying) return;
+    cloudSyncRequested = true;
+    clearTimeout(cloudSyncTimer);
+    cloudSyncTimer = setTimeout(prosesSinkronisasiCloud, 500);
+  }
+
+  async function prosesSinkronisasiCloud() {
+    if (cloudSyncBusy || !cloudSyncRequested) return;
+    cloudSyncBusy = true;
+    try {
+      while (cloudSyncRequested) {
+        cloudSyncRequested = false;
+        setStatusCloud('Menyimpan perubahan dan gambar ke Google Drive...');
+        await kirimStateCloud();
+      }
+    } catch (error) {
+      console.error('Gagal menyinkronkan website ke Drive:', error);
+      setStatusCloud(`Perubahan tersimpan di perangkat ini, tetapi belum online: ${error.message}`, true);
+    } finally {
+      cloudSyncBusy = false;
+      if (cloudSyncRequested) prosesSinkronisasiCloud();
+    }
+  }
+
+  let cloudApplying = false;
+
+  function alamatCloudValid(value) {
+    try {
+      const url = new URL(value);
+      return url.protocol === 'https:' &&
+        url.hostname === 'script.google.com' &&
+        /^\/macros\/s\/[^/]+\/exec\/?$/.test(url.pathname);
+    } catch (error) {
+      return false;
+    }
+  }
+
+  async function hubungkanCloud() {
+    if (!isAdmin) {
+      alert('Masuk ke mode admin terlebih dahulu.');
+      return;
+    }
+    const url = document.getElementById('cloudApiUrlInput').value.trim();
+    const token = document.getElementById('cloudAdminTokenInput').value.trim();
+    if (!alamatCloudValid(url)) {
+      setStatusCloud('Masukkan URL Web App Apps Script yang valid dan berakhiran /exec.', true);
+      return;
+    }
+    if (token.length < 32) {
+      setStatusCloud('Token Admin tidak valid. Jalankan rotasiTokenAdmin di Apps Script dan salin token terbarunya.', true);
+      return;
+    }
+
+    const button = document.getElementById('cloudConnectButton');
+    button.disabled = true;
+    POSBANKUM_CLOUD_API_URL = url.replace(/\/+$/, '');
+    try {
+      localStorage.setItem('posbankum_cloud_api_url', POSBANKUM_CLOUD_API_URL);
+    } catch (error) {
+      console.error('Gagal menyimpan URL Apps Script:', error);
+      setStatusCloud('Browser tidak dapat menyimpan URL Apps Script. Coba browser lain.', true);
+      button.disabled = false;
+      return;
+    }
+    sessionStorage.setItem('posbankum_cloud_admin_token', token);
+    document.getElementById('cloudAdminTokenInput').value = '';
+    setStatusCloud('Memeriksa koneksi dan menyimpan konten website ke Google Drive...');
+
+    try {
+      const response = await muatStateCloudPublik();
+      if (response && response.state) cloudHasState = true;
+      await kirimStateCloud();
+      cloudHasState = true;
+    } catch (error) {
+      console.error('Gagal menghubungkan penyimpanan Drive:', error);
+      setStatusCloud(`Belum tersambung: ${error.message}`, true);
+    } finally {
+      button.disabled = false;
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const input = document.getElementById('cloudApiUrlInput');
+    if (input) input.value = POSBANKUM_CLOUD_API_URL;
+  });
+
+  function simpanJson(key, value, tampilkanPeringatan = true) {
+    try {
+      localStorage.setItem(key, JSON.stringify(value));
+      if (['posbankum_settings', 'posbankum_widgets', 'posbankum_berita', 'posbankum_galeri', 'posbankum_pengurus'].includes(key)) {
+        jadwalkanSinkronisasiCloud();
+      }
+      return true;
+    } catch (error) {
+      console.error(`Gagal menyimpan ${key}:`, error);
+      if (POSBANKUM_CLOUD_API_URL && isAdmin && sessionStorage.getItem('posbankum_cloud_admin_token') &&
+          ['posbankum_settings', 'posbankum_widgets', 'posbankum_berita', 'posbankum_galeri', 'posbankum_pengurus'].includes(key)) {
+        setStatusCloud('Penyimpanan browser penuh. Mencoba menyimpan perubahan langsung ke Google Drive.');
+        jadwalkanSinkronisasiCloud();
+        return true;
+      }
+      if (tampilkanPeringatan) {
+        alert('Penyimpanan browser penuh atau tidak tersedia. Hapus beberapa gambar berukuran besar, lalu coba lagi.');
+      }
+      return false;
+    }
+  }
+
+  function bukaDatabaseArsip() {
+    if (!('indexedDB' in window)) {
+      return Promise.reject(new Error('Penyimpanan arsip tidak didukung oleh browser ini.'));
+    }
+    if (!archiveDatabasePromise) {
+      archiveDatabasePromise = new Promise((resolve, reject) => {
+        const request = indexedDB.open('posbankum_arsip', 1);
+        request.onupgradeneeded = () => {
+          const database = request.result;
+          if (!database.objectStoreNames.contains('dokumen')) {
+            database.createObjectStore('dokumen', { keyPath: 'id' });
+          }
+        };
+        request.onsuccess = () => resolve(request.result);
+        request.onerror = () => reject(request.error || new Error('Database arsip gagal dibuka.'));
+        request.onblocked = () => reject(new Error('Database arsip sedang dipakai tab lain. Tutup tab POSBANKUM lain lalu coba lagi.'));
+      });
+    }
+    return archiveDatabasePromise;
+  }
+
+  function operasiArsip(mode, action) {
+    return bukaDatabaseArsip().then(database => new Promise((resolve, reject) => {
+      const transaction = database.transaction('dokumen', mode);
+      const request = action(transaction.objectStore('dokumen'));
+      let result;
+      request.onsuccess = () => { result = request.result; };
+      request.onerror = () => reject(request.error || new Error('Operasi arsip gagal.'));
+      transaction.oncomplete = () => resolve(result);
+      transaction.onerror = () => reject(transaction.error || new Error('Operasi arsip gagal.'));
+      transaction.onabort = () => reject(transaction.error || new Error('Penyimpanan arsip dibatalkan.'));
+    }));
+  }
+
+  function tampilkanStatusArsip(message, isError = false) {
+    const status = document.getElementById('archiveStatus');
+    status.textContent = message;
+    status.style.color = isError ? '#b91c1c' : '';
+  }
+
+  async function renderArsip() {
+    const list = document.getElementById('archiveList');
+    list.replaceChildren();
+    try {
+      const records = await operasiArsip('readonly', store => store.getAll());
+      records.sort((a, b) => b.createdAt - a.createdAt);
+      if (records.length === 0) {
+        const empty = document.createElement('p');
+        empty.className = 'archive-empty';
+        empty.textContent = 'Belum ada berkas arsip.';
+        list.append(empty);
+        return;
+      }
+
+      records.forEach(record => {
+        const item = document.createElement('article');
+        item.className = 'archive-item';
+        const info = document.createElement('div');
+        info.className = 'archive-item-info';
+        const name = document.createElement('strong');
+        name.textContent = record.name;
+        const details = document.createElement('small');
+        const date = new Date(record.createdAt).toLocaleString('id-ID');
+        const size = record.size < 1024 * 1024
+          ? `${Math.max(1, Math.round(record.size / 1024))} KB`
+          : `${(record.size / (1024 * 1024)).toFixed(1)} MB`;
+        details.textContent = `${date} · ${size}${record.note ? ` · ${record.note}` : ''}`;
+        info.append(name, details);
+
+        const actions = document.createElement('div');
+        actions.className = 'archive-item-actions';
+        [
+          { label: '⬇️ Unduh', action: 'download' },
+          { label: '🗑️ Hapus', action: 'delete', className: 'archive-delete' }
+        ].forEach(buttonData => {
+          const button = document.createElement('button');
+          button.type = 'button';
+          button.textContent = buttonData.label;
+          button.dataset.archiveAction = buttonData.action;
+          button.dataset.archiveId = record.id;
+          if (buttonData.className) button.className = buttonData.className;
+          actions.append(button);
+        });
+        item.append(info, actions);
+        list.append(item);
+      });
+    } catch (error) {
+      console.error('Gagal memuat arsip:', error);
+      tampilkanStatusArsip(error.message, true);
+    }
+  }
+
+  async function simpanArsip() {
+    const input = document.getElementById('archiveFile');
+    const file = input.files[0];
+    if (!file) {
+      tampilkanStatusArsip('Pilih berkas terlebih dahulu.', true);
+      return;
+    }
+    if (file.size > 25 * 1024 * 1024) {
+      tampilkanStatusArsip('Ukuran berkas maksimal 25 MB.', true);
+      return;
+    }
+
+    const button = document.getElementById('archiveSaveButton');
+    button.disabled = true;
+    tampilkanStatusArsip('Menyimpan berkas ke arsip...');
+    try {
+      const record = {
+        id: `${Date.now()}-${Math.random().toString(36).slice(2)}`,
+        name: file.name,
+        type: file.type || 'application/octet-stream',
+        size: file.size,
+        note: document.getElementById('archiveNote').value.trim(),
+        createdAt: Date.now(),
+        blob: file.slice(0, file.size, file.type || 'application/octet-stream')
+      };
+      await operasiArsip('readwrite', store => store.add(record));
+      input.value = '';
+      document.getElementById('archiveNote').value = '';
+      tampilkanStatusArsip('✅ Berkas tersimpan di arsip browser ini.');
+      await renderArsip();
+    } catch (error) {
+      console.error('Gagal menyimpan berkas arsip:', error);
+      tampilkanStatusArsip(`Gagal menyimpan berkas: ${error.message}`, true);
+    } finally {
+      button.disabled = false;
+    }
+  }
+
+  async function unduhArsip(id) {
+    try {
+      const record = await operasiArsip('readonly', store => store.get(id));
+      if (!record) throw new Error('Berkas arsip tidak ditemukan.');
+      const url = URL.createObjectURL(record.blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = record.name;
+      link.click();
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+    } catch (error) {
+      console.error('Gagal mengunduh arsip:', error);
+      tampilkanStatusArsip(`Gagal mengunduh berkas: ${error.message}`, true);
+    }
+  }
+
+  async function hapusArsip(id) {
+    if (!confirm('Hapus berkas ini dari arsip browser?')) return;
+    try {
+      await operasiArsip('readwrite', store => store.delete(id));
+      tampilkanStatusArsip('Berkas berhasil dihapus dari arsip.');
+      await renderArsip();
+    } catch (error) {
+      console.error('Gagal menghapus arsip:', error);
+      tampilkanStatusArsip(`Gagal menghapus berkas: ${error.message}`, true);
+    }
+  }
+
+  function bacaGambar(file) {
+    return new Promise((resolve, reject) => {
+      if (!file || !file.type.startsWith('image/')) {
+        reject(new Error('Pilih file gambar yang valid.'));
+        return;
+      }
+      if (file.size > 12 * 1024 * 1024) {
+        reject(new Error('Ukuran gambar maksimal 12 MB.'));
+        return;
+      }
+
+      const image = new Image();
+      const objectUrl = URL.createObjectURL(file);
+      image.onload = () => {
+        URL.revokeObjectURL(objectUrl);
+        const maxSide = 1280;
+        const scale = Math.min(1, maxSide / Math.max(image.naturalWidth, image.naturalHeight));
+        const canvas = document.createElement('canvas');
+        canvas.width = Math.max(1, Math.round(image.naturalWidth * scale));
+        canvas.height = Math.max(1, Math.round(image.naturalHeight * scale));
+        const context = canvas.getContext('2d');
+        if (!context) {
+          reject(new Error('Browser tidak dapat memproses gambar ini.'));
+          return;
+        }
+        context.drawImage(image, 0, 0, canvas.width, canvas.height);
+        const compressed = canvas.toDataURL('image/webp', 0.75);
+        resolve(compressed.startsWith('data:image/webp') ? compressed : canvas.toDataURL('image/jpeg', 0.75));
+      };
+      image.onerror = () => {
+        URL.revokeObjectURL(objectUrl);
+        reject(new Error('Gambar tidak dapat dibuka. Coba gunakan file gambar lain.'));
+      };
+      image.src = objectUrl;
+    });
+  }
+
+  function urlGambarValid(value) {
+    if (!value) return true;
+    if (value.startsWith('data:image/')) return true;
+    try {
+      const url = new URL(value, window.location.href);
+      return url.protocol === 'http:' || url.protocol === 'https:' || url.protocol === 'file:';
+    } catch (error) {
+      return false;
+    }
+  }
+
+  function urlPetaValid(value) {
+    try {
+      const url = new URL(value);
+      return url.protocol === 'https:' && url.hostname === 'www.google.com' && url.pathname.startsWith('/maps/embed');
+    } catch (error) {
+      return false;
+    }
+  }
+
+  function nomorWhatsApp(phone = settings.phone) {
+    const digits = phone.replace(/\D/g, '');
+    return digits.startsWith('0') ? `62${digits.slice(1)}` : digits;
+  }
+
+  function terapkanTema(settingsTema = settings) {
+    const palette = themePalettes[settingsTema.themePreset] || themePalettes.green;
+    const root = document.documentElement;
+    root.style.setProperty('--primary', settingsTema.themePrimary);
+    root.style.setProperty('--secondary', settingsTema.themeSecondary);
+    root.style.setProperty('--accent', settingsTema.themeAccent);
+    root.style.setProperty('--page-background', settingsTema.pageBackgroundColor);
+    root.style.setProperty('--header-start', palette.headerStart);
+    root.style.setProperty('--header-end', palette.headerEnd);
+    root.style.setProperty('--hero-start', palette.heroStart);
+    root.style.setProperty('--hero-end', palette.heroEnd);
+
+    const backgroundImage = settingsTema.pageBackgroundImage
+      ? `url(${JSON.stringify(settingsTema.pageBackgroundImage)})`
+      : 'none';
+    document.body.style.setProperty('--page-background-image', backgroundImage);
+    document.body.style.setProperty('--page-background-opacity', String(settingsTema.pageBackgroundOpacity / 100));
+    const animations = {
+      none: 'none',
+      zoom: 'pageBackgroundZoom 30s ease-in-out infinite alternate',
+      drift: 'pageBackgroundDrift 40s ease-in-out infinite alternate'
+    };
+    document.body.style.setProperty('--page-background-animation', animations[settingsTema.pageBackgroundAnimation] || 'none');
+  }
+
+  function isiFormTampilan() {
+    document.getElementById('themePresetInput').value = settings.themePreset;
+    document.getElementById('themePrimaryInput').value = settings.themePrimary;
+    document.getElementById('themeSecondaryInput').value = settings.themeSecondary;
+    document.getElementById('themeAccentInput').value = settings.themeAccent;
+    document.getElementById('pageBackgroundColorInput').value = settings.pageBackgroundColor;
+    document.getElementById('pageBackgroundUrl').value = settings.pageBackgroundImage.startsWith('data:') ? '' : settings.pageBackgroundImage;
+    document.getElementById('pageBackgroundPreview').src = settings.pageBackgroundImage || '';
+    document.getElementById('pageBackgroundPreview').hidden = !settings.pageBackgroundImage;
+    document.getElementById('pageBackgroundOpacityInput').value = settings.pageBackgroundOpacity;
+    document.getElementById('pageBackgroundAnimationInput').value = settings.pageBackgroundAnimation;
+  }
+
+  function pilihTemaTampilan() {
+    const preset = document.getElementById('themePresetInput').value;
+    const palette = themePalettes[preset];
+    if (!palette) return;
+    document.getElementById('themePrimaryInput').value = palette.themePrimary;
+    document.getElementById('themeSecondaryInput').value = palette.themeSecondary;
+    document.getElementById('themeAccentInput').value = palette.themeAccent;
+    document.getElementById('pageBackgroundColorInput').value = palette.pageBackgroundColor;
+  }
+
+  function tandaiTemaKustom() {
+    document.getElementById('themePresetInput').value = 'custom';
+  }
+
+  function terapkanPengaturan() {
+    terapkanTema();
+    document.getElementById('siteName').textContent = settings.siteName;
+    document.getElementById('siteTagline').textContent = settings.siteTagline;
+    document.getElementById('heroTitle').textContent = settings.heroTitle;
+    document.getElementById('heroDescription').textContent = settings.heroDescription;
+    document.getElementById('contactAddress').textContent = settings.address;
+    document.getElementById('contactPhone').textContent = settings.phone;
+    document.getElementById('contactEmail').textContent = settings.email;
+    document.getElementById('contactHours').textContent = settings.hours;
+    document.querySelector('#kontak iframe').src = settings.mapEmbed;
+    document.getElementById('waFloat').href = `https://wa.me/${nomorWhatsApp()}`;
+    document.getElementById('siteLogo').src = settings.logo;
+    document.getElementById('heroBackground').src = settings.heroImage;
+    document.getElementById('siteNameInput').value = settings.siteName;
+    document.getElementById('siteTaglineInput').value = settings.siteTagline;
+    document.getElementById('heroTitleInput').value = settings.heroTitle;
+    document.getElementById('heroDescriptionInput').value = settings.heroDescription;
+    document.getElementById('contactAddressInput').value = settings.address;
+    document.getElementById('contactPhoneInput').value = settings.phone;
+    document.getElementById('contactEmailInput').value = settings.email;
+    document.getElementById('contactHoursInput').value = settings.hours;
+    document.getElementById('mapEmbedInput').value = settings.mapEmbed;
+    document.getElementById('siteLogoPreview').src = settings.logo;
+    document.getElementById('heroImagePreview').src = settings.heroImage;
+    isiFormTampilan();
+  }
+
+  async function simpanPengaturan() {
+    const nextSettings = {
+      siteName: document.getElementById('siteNameInput').value.trim(),
+      siteTagline: document.getElementById('siteTaglineInput').value.trim(),
+      heroTitle: document.getElementById('heroTitleInput').value.trim(),
+      heroDescription: document.getElementById('heroDescriptionInput').value.trim(),
+      address: document.getElementById('contactAddressInput').value.trim(),
+      phone: document.getElementById('contactPhoneInput').value.trim(),
+      email: document.getElementById('contactEmailInput').value.trim(),
+      hours: document.getElementById('contactHoursInput').value.trim(),
+      mapEmbed: document.getElementById('mapEmbedInput').value.trim(),
+      logo: settings.logo,
+      heroImage: settings.heroImage,
+      themePreset: document.getElementById('themePresetInput').value,
+      themePrimary: document.getElementById('themePrimaryInput').value,
+      themeSecondary: document.getElementById('themeSecondaryInput').value,
+      themeAccent: document.getElementById('themeAccentInput').value,
+      pageBackgroundColor: document.getElementById('pageBackgroundColorInput').value,
+      pageBackgroundImage: settings.pageBackgroundImage,
+      pageBackgroundOpacity: Number(document.getElementById('pageBackgroundOpacityInput').value),
+      pageBackgroundAnimation: document.getElementById('pageBackgroundAnimationInput').value
+    };
+    const logoUrl = document.getElementById('siteLogoUrl').value.trim();
+    const heroUrl = document.getElementById('heroImageUrl').value.trim();
+    const logoFile = document.getElementById('siteLogoFile').files[0];
+    const heroFile = document.getElementById('heroImageFile').files[0];
+    const backgroundUrl = document.getElementById('pageBackgroundUrl').value.trim();
+    const backgroundFile = document.getElementById('pageBackgroundFile').files[0];
+
+    if (!nextSettings.siteName || !nextSettings.heroTitle || !nextSettings.phone || !nextSettings.email) {
+      alert('Nama website, judul halaman utama, WhatsApp, dan email wajib diisi.');
+      return;
+    }
+    if (!urlPetaValid(nextSettings.mapEmbed)) {
+      alert('URL peta harus berasal dari Google Maps Embed.');
+      return;
+    }
+    if (nomorWhatsApp(nextSettings.phone).length < 8 || !document.getElementById('contactEmailInput').checkValidity()) {
+      alert('Periksa kembali nomor WhatsApp dan alamat email.');
+      return;
+    }
+    if (!urlGambarValid(logoUrl) || !urlGambarValid(heroUrl) || !urlGambarValid(backgroundUrl)) {
+      alert('URL gambar harus menggunakan alamat gambar yang valid (http/https atau alamat lokal).');
+      return;
+    }
+    if (!themePalettes[nextSettings.themePreset] && nextSettings.themePreset !== 'custom') {
+      alert('Pilih tema warna yang tersedia.');
+      return;
+    }
+    if (!['none', 'zoom', 'drift'].includes(nextSettings.pageBackgroundAnimation) ||
+        !Number.isFinite(nextSettings.pageBackgroundOpacity) ||
+        nextSettings.pageBackgroundOpacity < 0 || nextSettings.pageBackgroundOpacity > 60) {
+      alert('Pengaturan animasi atau kekuatan gambar latar tidak valid.');
+      return;
+    }
+
+    try {
+      if (logoFile) nextSettings.logo = await bacaGambar(logoFile);
+      else if (logoUrl) nextSettings.logo = logoUrl;
+      if (heroFile) nextSettings.heroImage = await bacaGambar(heroFile);
+      else if (heroUrl) nextSettings.heroImage = heroUrl;
+      if (backgroundFile) nextSettings.pageBackgroundImage = await bacaGambar(backgroundFile);
+      else if (backgroundUrl) nextSettings.pageBackgroundImage = backgroundUrl;
+    } catch (error) {
+      alert(error.message);
+      return;
+    }
+
+    if (!simpanJson('posbankum_settings', nextSettings)) return;
+    settings = nextSettings;
+    terapkanPengaturan();
+    document.getElementById('siteLogoFile').value = '';
+    document.getElementById('heroImageFile').value = '';
+    document.getElementById('siteLogoUrl').value = '';
+    document.getElementById('heroImageUrl').value = '';
+    document.getElementById('pageBackgroundFile').value = '';
+    document.getElementById('pageBackgroundUrl').value = '';
+    alert('✅ Pengaturan website berhasil disimpan di browser ini.');
+  }
+
+  function eksporCadangan() {
+    const backup = {
+      format: 'posbankum-backup',
+      version: 1,
+      exportedAt: new Date().toISOString(),
+      settings,
+      widgets,
+      berita,
+      galeri,
+      pengurus
+    };
+    const blob = new Blob([JSON.stringify(backup, null, 2)], { type: 'application/json' });
+    const downloadUrl = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = downloadUrl;
+    link.download = `cadangan-posbankum-${new Date().toISOString().slice(0, 10)}.json`;
+    link.click();
+    setTimeout(() => URL.revokeObjectURL(downloadUrl), 1000);
+  }
+
+  function imporCadangan(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onerror = () => {
+      alert('File cadangan tidak dapat dibaca.');
+      event.target.value = '';
+    };
+    reader.onload = () => {
+      let backup;
+      try {
+        backup = JSON.parse(reader.result);
+      } catch (error) {
+        alert('File bukan cadangan JSON yang valid.');
+        event.target.value = '';
+        return;
+      }
+
+      const validItems = (items, fields) => Array.isArray(items) &&
+        items.every(item => item && fields.every(field => typeof item[field] === 'string'));
+      const optionalColorValid = field => backup.settings[field] === undefined ||
+        (typeof backup.settings[field] === 'string' && /^#[0-9a-f]{6}$/i.test(backup.settings[field]));
+      const optionalSettingValid = (field, validate) =>
+        backup.settings[field] === undefined || validate(backup.settings[field]);
+      if (backup.format !== 'posbankum-backup' || !backup.settings ||
+          !['siteName', 'siteTagline', 'heroTitle', 'heroDescription', 'address', 'phone', 'email', 'hours', 'mapEmbed', 'logo', 'heroImage']
+            .every(field => typeof backup.settings[field] === 'string') ||
+          !urlPetaValid(backup.settings.mapEmbed) ||
+          backup.settings.phone.replace(/\D/g, '').length < 8 ||
+          !validItems(backup.widgets, ['judul', 'url', 'icon']) ||
+          !validItems(backup.berita, ['judul', 'gambar', 'isi', 'tanggal']) ||
+          !validItems(backup.galeri, ['foto', 'ket']) ||
+          !validItems(backup.pengurus, ['nama', 'jabatan', 'foto']) ||
+          !urlGambarValid(backup.settings.logo) || !urlGambarValid(backup.settings.heroImage) ||
+          !optionalSettingValid('themePreset', value => value === 'custom' || !!themePalettes[value]) ||
+          !['themePrimary', 'themeSecondary', 'themeAccent', 'pageBackgroundColor'].every(optionalColorValid) ||
+          !optionalSettingValid('pageBackgroundImage', value => typeof value === 'string' && urlGambarValid(value)) ||
+          !optionalSettingValid('pageBackgroundOpacity', value => Number.isInteger(value) && value >= 0 && value <= 60) ||
+          !optionalSettingValid('pageBackgroundAnimation', value => ['none', 'zoom', 'drift'].includes(value))) {
+        alert('Isi file cadangan tidak sesuai atau ada data yang rusak.');
+        event.target.value = '';
+        return;
+      }
+
+      if (!confirm('Impor akan mengganti seluruh data website di browser ini. Lanjutkan?')) {
+        event.target.value = '';
+        return;
+      }
+
+      const entries = {
+        posbankum_settings: { ...defaultSettings, ...backup.settings },
+        posbankum_widgets: backup.widgets,
+        posbankum_berita: backup.berita,
+        posbankum_galeri: backup.galeri,
+        posbankum_pengurus: backup.pengurus
+      };
+      const previous = Object.keys(entries).reduce((saved, key) => {
+        saved[key] = localStorage.getItem(key);
+        return saved;
+      }, {});
+      try {
+        Object.entries(entries).forEach(([key, value]) => localStorage.setItem(key, JSON.stringify(value)));
+        alert('✅ Cadangan berhasil diimpor. Halaman akan dimuat ulang.');
+        window.location.reload();
+      } catch (error) {
+        Object.entries(previous).forEach(([key, value]) => {
+          try {
+            if (value === null) localStorage.removeItem(key);
+            else localStorage.setItem(key, value);
+          } catch (restoreError) {
+            console.error(`Gagal memulihkan ${key}:`, restoreError);
+          }
+        });
+        console.error('Gagal mengimpor cadangan:', error);
+        alert('Cadangan tidak dapat disimpan karena ruang browser tidak cukup. Data lama sudah dipulihkan.');
+      }
+      event.target.value = '';
+    };
+    reader.readAsText(file);
+  }
+
+  function pratinjauGambar(inputId, previewId) {
+    const file = document.getElementById(inputId).files[0];
+    if (!file || !file.type.startsWith('image/')) return;
+    const preview = document.getElementById(previewId);
+    const url = URL.createObjectURL(file);
+    preview.onload = () => URL.revokeObjectURL(url);
+    preview.src = url;
+  }
+
+  const widgetDefaults = [
+    { judul: "Web Desa Cigentur", url: "https://cigentur.desa.id", icon: "image/widget-desa.svg", target: "_blank" },
+    { judul: "JDIH Kabupaten Bandung", url: "https://jdih.bandungkab.go.id", icon: "image/widget-jdih.svg", target: "_blank" },
+    { judul: "Kementerian Hukum dan HAM", url: "https://kemenkumham.go.id", icon: "image/widget-kemenkumham.svg", target: "_blank" },
+    { judul: "Konsultasi", url: "#pengaduan", icon: "image/widget-konsultasi.svg", target: "_self" }
+  ];
+  const savedWidgets = JSON.parse(localStorage.getItem('posbankum_widgets'));
+  let widgets = Array.isArray(savedWidgets)
+    ? savedWidgets.map(widget => {
+        const preset = widgetDefaults.find(item => item.url === widget.url);
+        return preset ? { ...preset, ...widget } : widget;
+      })
+    : widgetDefaults;
+  let berita = JSON.parse(localStorage.getItem('posbankum_berita')) || [
+    { judul: "Pembukaan Layanan POSBANKUM", gambar: "https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=600", isi: "POSBANKUM Desa Cigentur resmi membuka layanan bantuan hukum gratis untuk masyarakat.", tanggal: "05 Oktober 2026" },
+    { judul: "Sosialisasi Hukum Pertanahan", gambar: "https://images.unsplash.com/photo-1529390079861-591de354faf5?w=600", isi: "Edukasi dan pendampingan terkait sengketa tanah dan pertanahan desa.", tanggal: "02 Oktober 2026" }
+  ];
+
+  let galeri = JSON.parse(localStorage.getItem('posbankum_galeri')) || [
+    { foto: "https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=1000", ket: "Peresmian dan Pelayanan Pos Bantuan Hukum" },
+    { foto: "https://images.unsplash.com/photo-1521791136064-7986c2920216?w=1000", ket: "Konsultasi Hukum Gratis bagi Masyarakat Desa" }
+  ];
+
+  let pengurus = JSON.parse(localStorage.getItem('posbankum_pengurus')) || [
+    { nama: "LUTHFI PRAMA RIZKI, S.AP", jabatan: "Paralegal", foto: "https://i.pravatar.cc/150?img=12" },
+    { nama: "ENDUN HANHAN", jabatan: "Paralegal", foto: "https://i.pravatar.cc/150?img=33" },
+    { nama: "H. MOCH WAWAN SETIAWAN", jabatan: "Paralegal", foto: "https://i.pravatar.cc/150?img=15" }
+  ];
+
+  let slideIndex = 0;
+
+  /* RENDER WIDGET SIDEBAR */
+  function renderWidgets() {
+    const container = document.getElementById('widgetContainer');
+    const adminList = document.getElementById('widgetListAdmin');
+
+    container.innerHTML = widgets.map((w, i) => `
+      <div class="widget-item">
+        <a href="${w.url}" target="${w.target || '_blank'}" class="widget-btn" title="${w.judul}">
+          <img src="${w.icon}" alt="${w.judul}" onerror="this.src='https://via.placeholder.com/50?text=Link'"/>
+        </a>
+        <div class="widget-admin-btns">
+          <button type="button" class="btn-edit-widget" data-index="${i}" aria-label="Edit ${w.judul}">✏️</button>
+          <button type="button" class="btn-edit-widget-icon" data-widget-icon-index="${i}" aria-label="Ganti ikon ${w.judul}" title="Ganti gambar tanpa mengubah link">🖼️</button>
+          <button type="button" class="btn-delete-item btn-del-widget" data-index="${i}" aria-label="Hapus ${w.judul}">🗑️</button>
+        </div>
+      </div>
+    `).join('');
+
+    if (adminList) {
+      adminList.innerHTML = widgets.map((w, i) => `
+        <div class="widget-list-item">
+          <div>
+            <strong>${w.judul}</strong> <br>
+            <small style="color:#6b7280;">${w.url}</small>
+          </div>
+          <div>
+            <button type="button" class="btn-edit-widget" data-index="${i}">✏️ Edit</button>
+            <button type="button" class="btn-edit-widget-icon" data-widget-icon-index="${i}">🖼️ Ganti gambar</button>
+            <button type="button" class="btn-delete-item btn-del-widget" data-index="${i}">Hapus</button>
+          </div>
+        </div>
+      `).join('');
+    }
+  }
+
+  function pilihIkonWidget(index) {
+    if (!isAdmin || !widgets[index]) return;
+    editWidgetIconIndex = index;
+    document.getElementById('widgetIconQuickFile').click();
+  }
+
+  async function gantiIkonWidget(file) {
+    const index = editWidgetIconIndex;
+    editWidgetIconIndex = null;
+    if (!file || !widgets[index]) return;
+    try {
+      const icon = await bacaGambar(file);
+      const previousWidgets = [...widgets];
+      widgets[index] = { ...widgets[index], icon };
+      if (!simpanJson('posbankum_widgets', widgets)) {
+        widgets = previousWidgets;
+        renderWidgets();
+        return;
+      }
+      renderWidgets();
+      alert(`✅ Gambar widget "${widgets[index].judul}" berhasil diperbarui. Link tujuan tetap sama.`);
+    } catch (error) {
+      alert(error.message);
+    } finally {
+      document.getElementById('widgetIconQuickFile').value = '';
+    }
+  }
+
+  async function simpanWidget() {
+    const judul = document.getElementById('widgetJudul').value.trim();
+    const url = document.getElementById('widgetUrl').value.trim();
+    const iconUrl = document.getElementById('widgetIcon').value.trim();
+    const iconFile = document.getElementById('widgetIconFile').files[0];
+
+    if (!judul || !url) {
+      alert('Judul dan URL Widget wajib diisi!');
+      return;
+    }
+
+    if (!urlGambarValid(iconUrl)) {
+      alert('URL ikon harus menggunakan alamat gambar yang valid.');
+      return;
+    }
+    let icon = iconUrl || (editWidgetIndex !== null ? widgets[editWidgetIndex].icon : 'https://via.placeholder.com/100?text=Link');
+    try {
+      if (iconFile) icon = await bacaGambar(iconFile);
+    } catch (error) {
+      alert(error.message);
+      return;
+    }
+
+    const target = url.startsWith('#') ? '_self' : '_blank';
+    const widget = { judul, url, icon, target };
+    const previousWidgets = [...widgets];
+    if (editWidgetIndex !== null) {
+      widgets[editWidgetIndex] = widget;
+    } else {
+      widgets.push(widget);
+    }
+    const wasEditing = editWidgetIndex !== null;
+    if (!simpanJson('posbankum_widgets', widgets)) {
+      widgets = previousWidgets;
+      renderWidgets();
+      return;
+    }
+    resetFormWidget();
+    renderWidgets();
+    alert(wasEditing ? '✅ Widget berhasil diperbarui!' : '✅ Widget berhasil ditambahkan!');
+  }
+
+  function mulaiEditWidget(i) {
+    const widget = widgets[i];
+    if (!widget) return;
+    editWidgetIndex = i;
+    document.getElementById('widgetJudul').value = widget.judul;
+    document.getElementById('widgetUrl').value = widget.url;
+    document.getElementById('widgetIcon').value = widget.icon.startsWith('data:') ? '' : widget.icon;
+    document.getElementById('widgetIconFile').value = '';
+    document.getElementById('formWidgetTitle').textContent = `✏️ Edit Widget: ${widget.judul}`;
+    document.getElementById('btnSimpanWidget').textContent = '💾 Simpan Perubahan';
+    document.getElementById('btnBatalEditWidget').style.display = 'inline-block';
+    document.querySelector('#widgetListAdmin').closest('.form-admin-box').scrollIntoView({ behavior: 'smooth' });
+  }
+
+  function resetFormWidget() {
+    editWidgetIndex = null;
+    document.getElementById('widgetJudul').value = '';
+    document.getElementById('widgetUrl').value = '';
+    document.getElementById('widgetIcon').value = '';
+    document.getElementById('widgetIconFile').value = '';
+    document.getElementById('formWidgetTitle').textContent = '➕ Tambah Widget Baru';
+    document.getElementById('btnSimpanWidget').textContent = '➕ Tambah Widget';
+    document.getElementById('btnBatalEditWidget').style.display = 'none';
+  }
+
+  function hapusWidget(i) {
+    if (!widgets[i]) return;
+    if (confirm(`Hapus widget "${widgets[i].judul}"?`)) {
+      const previousWidgets = [...widgets];
+      widgets.splice(i, 1);
+      if (!simpanJson('posbankum_widgets', widgets)) {
+        widgets = previousWidgets;
+        renderWidgets();
+        return;
+      }
+      if (editWidgetIndex === i) resetFormWidget();
+      renderWidgets();
+    }
+  }
+
+  /* BERITA FUNCTIONS */
+  function renderBerita() {
+    const grid = document.getElementById('beritaGrid');
+    grid.innerHTML = berita.map((b, i) => `
+      <div class="berita-card">
+        <div>
+          <div class="berita-img-wrapper">
+            <img src="${b.gambar}" alt="${b.judul}" onerror="this.src='https://via.placeholder.com/600x400?text=Gambar+Berita'"/>
+          </div>
+          <div class="berita-body">
+            <small style="color:var(--primary); font-weight:bold;">${b.tanggal}</small>
+            <h3 style="margin:5px 0;">${b.judul}</h3>
+            <p style="font-size:14px; color:#4b5563;">${b.isi}</p>
+          </div>
+        </div>
+        ${isAdmin ? `
+          <div style="padding: 10px 15px; background: #fff3cd; display: flex; gap: 8px; border-top: 1px solid #ffebaa;">
+            <button type="button" class="btn-edit-berita" data-index="${i}" style="background:#f59e0b; color:white; border:none; padding:6px 12px; border-radius:4px; font-size:12px; cursor:pointer;">✏️ Edit</button>
+            <button type="button" class="btn-delete btn-del-berita" data-index="${i}">🗑️ Hapus</button>
+          </div>
+        ` : ''}
+        <div class="share-container">
+          <span style="font-size:12px;">Bagikan:</span>
+          <div>
+            <a href="https://api.whatsapp.com/send?text=${encodeURIComponent(b.judul)}" target="_blank" class="btn-share" style="background:#25d366;">WA</a>
+            <a href="https://www.facebook.com/sharer/sharer.php" target="_blank" class="btn-share" style="background:#1877f2;">FB</a>
+          </div>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  function mulaiEditBerita(i) {
+    editIndex = i;
+    const b = berita[i];
+    
+    document.getElementById('inputJudul').value = b.judul;
+    document.getElementById('inputIsi').value = b.isi;
+    document.getElementById('inputGambarUrl').value = b.gambar.startsWith('data:') ? '' : b.gambar;
+    
+    document.getElementById('formBeritaTitle').textContent = `✏️ Edit Berita (Indeks #${i + 1})`;
+    const btnSimpan = document.getElementById('btnSimpanBerita');
+    btnSimpan.textContent = '💾 Perbarui Berita';
+    btnSimpan.style.background = '#f59e0b';
+    document.getElementById('btnBatalEditBerita').style.display = 'block';
+
+    document.querySelector('#berita .form-admin-box').scrollIntoView({ behavior: 'smooth' });
+  }
+
+  function resetFormBerita() {
+    editIndex = null;
+    document.getElementById('inputJudul').value = '';
+    document.getElementById('inputIsi').value = '';
+    document.getElementById('inputGambarUrl').value = '';
+    document.getElementById('inputGambarFile').value = '';
+    
+    document.getElementById('formBeritaTitle').textContent = '➕ Tambah Berita Baru';
+    const btnSimpan = document.getElementById('btnSimpanBerita');
+    btnSimpan.textContent = 'Simpan Berita';
+    btnSimpan.style.background = 'var(--primary)';
+    document.getElementById('btnBatalEditBerita').style.display = 'none';
+  }
+
+  async function tambahBerita() {
+    const judul = document.getElementById('inputJudul').value.trim();
+    const isi = document.getElementById('inputIsi').value.trim();
+    const urlInput = document.getElementById('inputGambarUrl').value.trim();
+    const fileInput = document.getElementById('inputGambarFile').files[0];
+
+    if (!judul || !isi) {
+      alert('Judul dan isi berita wajib diisi!');
+      return;
+    }
+
+    const tanggal = new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+
+    if (!urlGambarValid(urlInput)) {
+      alert('URL gambar berita harus menggunakan alamat gambar yang valid.');
+      return;
+    }
+    let gambarFinal = urlInput;
+    try {
+      if (fileInput) gambarFinal = await bacaGambar(fileInput);
+    } catch (error) {
+      alert(error.message);
+      return;
+    }
+
+    const previousBerita = berita.map(item => ({ ...item }));
+    if (editIndex !== null) {
+      berita[editIndex].judul = judul;
+      berita[editIndex].isi = isi;
+      if (gambarFinal) berita[editIndex].gambar = gambarFinal;
+    } else {
+      const gambar = gambarFinal || 'https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=600';
+      berita.unshift({ judul, gambar, isi, tanggal });
+    }
+    if (!simpanJson('posbankum_berita', berita)) {
+      berita = previousBerita;
+      renderBerita();
+      return;
+    }
+    const wasEditing = editIndex !== null;
+    resetFormBerita();
+    renderBerita();
+    alert(wasEditing ? '✅ Berita berhasil diperbarui!' : '✅ Berita baru berhasil ditambahkan!');
+  }
+
+  function hapusBerita(i) {
+    if (confirm('Yakin ingin menghapus berita ini?')) {
+      const previousBerita = [...berita];
+      berita.splice(i, 1);
+      if (!simpanJson('posbankum_berita', berita)) {
+        berita = previousBerita;
+        renderBerita();
+        return;
+      }
+      if (editIndex === i) {
+        resetFormBerita();
+      }
+      renderBerita();
+    }
+  }
+
+  /* GALERI FUNCTIONS */
+  function renderGaleri() {
+    const container = document.getElementById('slideContainer');
+    container.innerHTML = galeri.map((g, i) => `
+      <div class="slide-item">
+        <img src="${g.foto}" alt="Galeri" onerror="this.src='https://via.placeholder.com/1000x500?text=Foto+Galeri'"/>
+        <div class="slide-caption">
+          <p>${g.ket}</p>
+          ${isAdmin ? `<button type="button" class="btn-edit-widget btn-edit-galeri" data-index="${i}">✏️ Edit</button> <button type="button" class="btn-delete btn-del-galeri" data-index="${i}">🗑️ Hapus Foto</button>` : ''}
+        </div>
+      </div>
+    `).join('');
+  }
+
+  function mulaiEditGaleri(i) {
+    const foto = galeri[i];
+    if (!foto) return;
+    editGaleriIndex = i;
+    document.getElementById('galeriKet').value = foto.ket;
+    document.getElementById('galeriUrl').value = foto.foto.startsWith('data:') ? '' : foto.foto;
+    document.getElementById('galeriFile').value = '';
+    document.getElementById('formGaleriTitle').textContent = '✏️ Edit Foto Galeri';
+    document.getElementById('btnSimpanGaleri').textContent = '💾 Simpan Perubahan';
+    document.getElementById('btnBatalEditGaleri').style.display = 'inline-block';
+    document.querySelector('#galeri .form-admin-box').scrollIntoView({ behavior: 'smooth' });
+  }
+
+  function resetFormGaleri() {
+    editGaleriIndex = null;
+    document.getElementById('galeriKet').value = '';
+    document.getElementById('galeriUrl').value = '';
+    document.getElementById('galeriFile').value = '';
+    document.getElementById('formGaleriTitle').textContent = '🖼️ Tambah Foto Galeri';
+    document.getElementById('btnSimpanGaleri').textContent = 'Unggah Foto';
+    document.getElementById('btnBatalEditGaleri').style.display = 'none';
+  }
+
+  async function tambahGaleri() {
+    const ket = document.getElementById('galeriKet').value.trim();
+    const urlInput = document.getElementById('galeriUrl').value.trim();
+    const fileInput = document.getElementById('galeriFile').files[0];
+
+    if (!ket) {
+      alert('Keterangan foto wajib diisi!');
+      return;
+    }
+
+    if (!urlGambarValid(urlInput)) {
+      alert('URL foto harus menggunakan alamat gambar yang valid.');
+      return;
+    }
+    let fotoFinal = urlInput;
+    try {
+      if (fileInput) fotoFinal = await bacaGambar(fileInput);
+    } catch (error) {
+      alert(error.message);
+      return;
+    }
+    if (!fotoFinal && editGaleriIndex === null) {
+      alert('Pilih foto dari perangkat atau masukkan URL foto.');
+      return;
+    }
+
+    const previousGaleri = [...galeri];
+    if (editGaleriIndex !== null) {
+      galeri[editGaleriIndex] = {
+        foto: fotoFinal || galeri[editGaleriIndex].foto,
+        ket
+      };
+    } else {
+      galeri.push({ foto: fotoFinal, ket });
+    }
+    if (!simpanJson('posbankum_galeri', galeri)) {
+      galeri = previousGaleri;
+      renderGaleri();
+      return;
+    }
+    const wasEditing = editGaleriIndex !== null;
+    resetFormGaleri();
+    slideIndex = 0;
+    document.getElementById('slideContainer').style.transform = 'translateX(0)';
+    renderGaleri();
+    alert(wasEditing ? '✅ Foto galeri berhasil diperbarui!' : '✅ Foto berhasil ditambahkan ke galeri!');
+  }
+
+  function hapusGaleri(i) {
+    if (confirm('Yakin ingin menghapus foto ini?')) {
+      const previousGaleri = [...galeri];
+      galeri.splice(i, 1);
+      if (!simpanJson('posbankum_galeri', galeri)) {
+        galeri = previousGaleri;
+        renderGaleri();
+        return;
+      }
+      if (editGaleriIndex === i) resetFormGaleri();
+      slideIndex = 0;
+      document.getElementById('slideContainer').style.transform = 'translateX(0)';
+      renderGaleri();
+    }
+  }
+
+  /* STRUKTUR FUNCTIONS */
+  function renderStruktur() {
+    const grid = document.getElementById('strukturGrid');
+    grid.innerHTML = pengurus.map((p, i) => `
+      <div class="pengurus-card">
+        <img src="${p.foto}" alt="${p.nama}" onerror="this.src='https://via.placeholder.com/150?text=Foto'"/>
+        <h4>${p.nama}</h4>
+        <p class="jabatan">${p.jabatan}</p>
+        ${isAdmin ? `
+          <div class="admin-actions">
+            <button type="button" class="btn-edit-pengurus" data-index="${i}">✏️ Edit</button>
+            <button type="button" class="btn-delete-item btn-del-pengurus" data-index="${i}">🗑️ Hapus</button>
+          </div>
+        ` : ''}
+      </div>
+    `).join('');
+  }
+
+  async function simpanPengurus() {
+    const nama = document.getElementById('tambahNama').value.trim();
+    const jabatan = document.getElementById('tambahJabatan').value.trim();
+    const urlInput = document.getElementById('tambahFotoUrl').value.trim();
+    const fileInput = document.getElementById('tambahFotoFile').files[0];
+
+    if (!nama || !jabatan) {
+      alert('Nama dan Jabatan pengurus wajib diisi!');
+      return;
+    }
+
+    if (!urlGambarValid(urlInput)) {
+      alert('URL foto pengurus harus menggunakan alamat gambar yang valid.');
+      return;
+    }
+    let fotoFinal = urlInput || (editPengurusIndex !== null ? pengurus[editPengurusIndex].foto : 'https://i.pravatar.cc/150?img=50');
+    try {
+      if (fileInput) fotoFinal = await bacaGambar(fileInput);
+    } catch (error) {
+      alert(error.message);
+      return;
+    }
+
+    const previousPengurus = [...pengurus];
+    const anggota = { nama, jabatan, foto: fotoFinal };
+    const wasEditing = editPengurusIndex !== null;
+    if (wasEditing) pengurus[editPengurusIndex] = anggota;
+    else pengurus.push(anggota);
+    if (!simpanJson('posbankum_pengurus', pengurus)) {
+      pengurus = previousPengurus;
+      renderStruktur();
+      return;
+    }
+    resetFormPengurus();
+    renderStruktur();
+    alert(wasEditing ? '✅ Data pengurus berhasil diperbarui!' : '✅ Anggota pengurus berhasil ditambahkan!');
+  }
+
+  function mulaiEditPengurus(i) {
+    const anggota = pengurus[i];
+    if (!anggota) return;
+    editPengurusIndex = i;
+    document.getElementById('tambahNama').value = anggota.nama;
+    document.getElementById('tambahJabatan').value = anggota.jabatan;
+    document.getElementById('tambahFotoUrl').value = anggota.foto.startsWith('data:') ? '' : anggota.foto;
+    document.getElementById('tambahFotoFile').value = '';
+    document.getElementById('formPengurusTitle').textContent = `✏️ Edit Pengurus: ${anggota.nama}`;
+    document.getElementById('btnSimpanPengurus').textContent = '💾 Simpan Perubahan';
+    document.getElementById('btnBatalEditPengurus').style.display = 'inline-block';
+    document.querySelector('#struktur .form-admin-box').scrollIntoView({ behavior: 'smooth' });
+  }
+
+  function resetFormPengurus() {
+    editPengurusIndex = null;
+    document.getElementById('tambahNama').value = '';
+    document.getElementById('tambahJabatan').value = '';
+    document.getElementById('tambahFotoUrl').value = '';
+    document.getElementById('tambahFotoFile').value = '';
+    document.getElementById('formPengurusTitle').textContent = '➕ Tambah Anggota Pengurus Baru';
+    document.getElementById('btnSimpanPengurus').textContent = '➕ Tambah Pengurus';
+    document.getElementById('btnBatalEditPengurus').style.display = 'none';
+  }
+
+  function hapusPengurus(i) {
+    const anggota = pengurus[i];
+    if (!anggota) return;
+    if (confirm(`Hapus data pengurus "${anggota.nama}"?`)) {
+      const previousPengurus = [...pengurus];
+      pengurus.splice(i, 1);
+      if (!simpanJson('posbankum_pengurus', pengurus)) {
+        pengurus = previousPengurus;
+        renderStruktur();
+        return;
+      }
+      if (editPengurusIndex === i) resetFormPengurus();
+      renderStruktur();
+    }
+  }
+
+  /* AUTH ADMIN */
+  function toggleLogin() {
+    if (isAdmin) {
+      if (confirm('Keluar dari mode admin?')) {
+        isAdmin = false;
+        resetFormBerita();
+        resetFormWidget();
+        resetFormPengurus();
+        resetFormGaleri();
+        sessionStorage.removeItem('posbankum_cloud_admin_token');
+        document.body.classList.remove('admin-mode');
+        document.getElementById('btnLogin').textContent = '🔐 Admin';
+        renderWidgets();
+        renderBerita();
+        renderGaleri();
+        renderStruktur();
+      }
+    } else {
+      document.getElementById('modalLogin').classList.add('active');
+    }
+  }
+
+  async function prosesLogin() {
+    const pw = document.getElementById('inputPassword').value;
+    if (pw === 'admin123') {
+      if (POSBANKUM_CLOUD_API_URL) {
+        await cloudLoadPromise;
+        let token = sessionStorage.getItem('posbankum_cloud_admin_token');
+        if (!token) {
+          token = prompt('Masukkan token Admin Apps Script untuk menyimpan perubahan ke Google Drive:');
+          if (token) sessionStorage.setItem('posbankum_cloud_admin_token', token.trim());
+        }
+        if (!sessionStorage.getItem('posbankum_cloud_admin_token')) {
+          setStatusCloud('Mode admin aktif, tetapi perubahan hanya tersimpan di perangkat ini karena token Drive belum dimasukkan.', true);
+        }
+      }
+      isAdmin = true;
+      document.body.classList.add('admin-mode');
+      document.getElementById('btnLogin').textContent = '🚪 Keluar Admin';
+      tutupModalLogin();
+      renderWidgets();
+      renderBerita();
+      renderGaleri();
+      renderStruktur();
+      renderArsip();
+      if (POSBANKUM_CLOUD_API_URL && sessionStorage.getItem('posbankum_cloud_admin_token') &&
+          cloudReadSucceeded && !cloudHasState) {
+        try {
+          await kirimStateCloud();
+          cloudHasState = true;
+        } catch (error) {
+          console.error('Gagal menerbitkan data awal website:', error);
+          setStatusCloud(`Data awal belum berhasil diterbitkan: ${error.message}`, true);
+        }
+      }
+      alert('✅ Berhasil masuk sebagai Admin!');
+    } else {
+      alert('❌ Password salah! (Default: admin123)');
+    }
+  }
+
+  function tutupModalLogin() {
+    document.getElementById('modalLogin').classList.remove('active');
+    document.getElementById('inputPassword').value = '';
+  }
+
+  /* EVENT DELEGATION GLOBAL */
+  document.addEventListener('click', function(e) {
+    const button = e.target.closest('button');
+    if (!button) return;
+    if (button.classList.contains('btn-edit-widget-icon')) {
+      const index = Number(button.dataset.widgetIconIndex);
+      pilihIkonWidget(index);
+      return;
+    }
+    const archiveAction = button.dataset.archiveAction;
+    if (archiveAction) {
+      const archiveId = button.dataset.archiveId;
+      if (archiveAction === 'download') unduhArsip(archiveId);
+      if (archiveAction === 'delete') hapusArsip(archiveId);
+      return;
+    }
+    const idx = Number(button.getAttribute('data-index'));
+    if (button.classList.contains('btn-del-berita')) {
+      hapusBerita(idx);
+    }
+    if (button.classList.contains('btn-edit-berita')) {
+      mulaiEditBerita(idx);
+    }
+    if (button.classList.contains('btn-edit-widget')) {
+      mulaiEditWidget(idx);
+    }
+    if (button.classList.contains('btn-del-widget')) {
+      hapusWidget(idx);
+    }
+    if (button.classList.contains('btn-edit-pengurus')) {
+      mulaiEditPengurus(idx);
+    }
+    if (button.classList.contains('btn-del-pengurus')) {
+      hapusPengurus(idx);
+    }
+    if (button.classList.contains('btn-del-galeri')) {
+      hapusGaleri(idx);
+    }
+    if (button.classList.contains('btn-edit-galeri')) {
+      mulaiEditGaleri(idx);
+    }
+  });
+
+  function bukaEditLogo() {
+    document.getElementById('siteLogoQuickFile').click();
+  }
+
+  async function gantiLogoLangsung(file) {
+    if (!file) return;
+    try {
+      const logo = await bacaGambar(file);
+      const nextSettings = { ...settings, logo };
+      if (!simpanJson('posbankum_settings', nextSettings)) return;
+      settings = nextSettings;
+      document.getElementById('siteLogo').src = logo;
+      document.getElementById('siteLogoPreview').src = logo;
+      document.getElementById('siteLogoUrl').value = '';
+      alert('✅ Logo berhasil diperbarui dan disimpan.');
+    } catch (error) {
+      alert(error.message);
+    } finally {
+      document.getElementById('siteLogoQuickFile').value = '';
+    }
+  }
+
+  document.getElementById('siteLogoQuickFile').addEventListener('change', event => gantiLogoLangsung(event.target.files[0]));
+  document.getElementById('widgetIconQuickFile').addEventListener('change', event => gantiIkonWidget(event.target.files[0]));
+  document.getElementById('siteLogoFile').addEventListener('change', () => pratinjauGambar('siteLogoFile', 'siteLogoPreview'));
+  document.getElementById('heroImageFile').addEventListener('change', () => pratinjauGambar('heroImageFile', 'heroImagePreview'));
+  document.getElementById('pageBackgroundFile').addEventListener('change', () => {
+    const input = document.getElementById('pageBackgroundFile');
+    const preview = document.getElementById('pageBackgroundPreview');
+    const file = input.files[0];
+    if (!file || !file.type.startsWith('image/')) return;
+    const url = URL.createObjectURL(file);
+    preview.hidden = false;
+    preview.onload = () => URL.revokeObjectURL(url);
+    preview.src = url;
+  });
+
+  /* SLIDER & FORM WA */
+  function moveSlide(n) {
+    const slides = document.querySelectorAll('.slide-item');
+    if(slides.length === 0) return;
+    slideIndex = (slideIndex + n + slides.length) % slides.length;
+    document.getElementById('slideContainer').style.transform = `translateX(-${slideIndex * 100}%)`;
+  }
+
+  function kirimPengaduanWA(e) {
+    e.preventDefault();
+    const nama = document.getElementById('aduanNama').value;
+    const hp = document.getElementById('aduanHp').value;
+    const pesan = document.getElementById('aduanPesan').value;
+    const text = `*Pengaduan POSBANKUM Desa Cigentur*\nNama: ${nama}\nNo: ${hp}\nPesan: ${pesan}`;
+    window.open(`https://wa.me/${nomorWhatsApp()}?text=${encodeURIComponent(text)}`, '_blank');
+  }
+
+  function updateStatistik() {
+    let today = new Date().toISOString().split('T')[0];
+    let statData = JSON.parse(localStorage.getItem('visitor_stats')) || {
+      lastDate: today, todayCount: 0, weekCount: 145, totalCount: 1240
+    };
+    if (statData.lastDate !== today) {
+      statData.lastDate = today;
+      statData.todayCount = 1;
+    } else {
+      statData.todayCount += 1;
+    }
+    statData.weekCount += 1;
+    statData.totalCount += 1;
+    simpanJson('visitor_stats', statData, false);
+
+    document.getElementById('statHariIni').innerText = statData.todayCount;
+    document.getElementById('statMingguIni').innerText = statData.weekCount;
+    document.getElementById('statTotal').innerText = statData.totalCount;
+    document.getElementById('statOnline').innerText = Math.floor(Math.random() * 4) + 1;
+  }
+
+  /* INIT */
+  terapkanPengaturan();
+  renderWidgets();
+  renderBerita();
+  renderGaleri();
+  renderStruktur();
+  updateStatistik();
+  cloudLoadPromise = muatStateCloudPublik();
+
+  setInterval(() => moveSlide(1), 5000);
+</script>
+</body>
+</html>
